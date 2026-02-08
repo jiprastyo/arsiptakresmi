@@ -18,21 +18,24 @@
             --button-hover: #f0f0f0;
             --button-active: #333333;
             --button-active-text: #ffffff;
+            --link-color: #2196f3;
         }
         
+        /* AMOLED DARK MODE PALETTE */
         [data-theme="dark"] {
-            --bg-primary: #1a1a1a;
-            --bg-secondary: #242424;
-            --bg-hover: #2a2a2a;
-            --bg-header: #2a2a2a;
-            --text-primary: #e0e0e0;
-            --text-secondary: #a0a0a0;
-            --border-color: #404040;
-            --border-light: #505050;
-            --button-bg: #2a2a2a;
-            --button-hover: #333333;
-            --button-active: #e0e0e0;
-            --button-active-text: #1a1a1a;
+            --bg-primary: #000000;       /* True Black */
+            --bg-secondary: #121212;     /* Material Dark Surface */
+            --bg-hover: #1a1a1a;         /* Slight Highlight */
+            --bg-header: #000000;        /* Header Blends In */
+            --text-primary: #ffffff;     /* Pure White */
+            --text-secondary: #b0b0b0;   /* Light Gray */
+            --border-color: #333333;     /* Subtle Borders */
+            --border-light: #404040;
+            --button-bg: #121212;
+            --button-hover: #222222;
+            --button-active: #ffffff;
+            --button-active-text: #000000;
+            --link-color: #64b5f6;       /* Lighter Blue for Dark Mode */
         }
         
         * {
@@ -96,7 +99,6 @@
             background: var(--button-hover);
         }
         
-        /* Modified Controls Layout */
         .controls {
             padding: 10px 15px;
             background: var(--bg-secondary);
@@ -108,7 +110,6 @@
         }
         
         .search-box {
-            /* Flex grow reduced so filters have space */
             flex: 0 1 250px; 
             min-width: 150px;
         }
@@ -139,7 +140,6 @@
             align-items: center;
         }
         
-        /* New Group for Selects to keep them together */
         .select-group {
             display: flex;
             gap: 8px;
@@ -209,6 +209,7 @@
             padding: 6px 12px;
             font-size: 13px;
             color: var(--text-primary);
+            vertical-align: middle;
         }
         
         tbody tr {
@@ -231,25 +232,38 @@
             font-weight: 500;
         }
         
-        .category-kuesioner { background: #e3f2fd; color: #1976d2; }
-        .category-klasifikasi { background: #f3e5f5; color: #7b1fa2; }
-        .category-pedoman { background: #fff3e0; color: #f57c00; }
-        .category-publikasi { background: #e8f5e9; color: #388e3c; }
+        .category-kuesioner { background: #e3f2fd; color: #1565c0; }
+        .category-klasifikasi { background: #f3e5f5; color: #6a1b9a; }
+        .category-pedoman { background: #fff3e0; color: #ef6c00; }
+        .category-publikasi { background: #e8f5e9; color: #2e7d32; }
         .category-sejarah { background: #fce4ec; color: #c2185b; }
         
+        /* Dark mode adjustment for badges to be readable on black */
+        [data-theme="dark"] .category-kuesioner { background: #0d47a1; color: #bbdefb; }
+        [data-theme="dark"] .category-klasifikasi { background: #4a148c; color: #e1bee7; }
+        [data-theme="dark"] .category-pedoman { background: #e65100; color: #ffe0b2; }
+        [data-theme="dark"] .category-publikasi { background: #1b5e20; color: #c8e6c9; }
+        [data-theme="dark"] .category-sejarah { background: #880e4f; color: #f8bbd0; }
+
         .link-cell a {
             display: inline-block;
-            padding: 4px 12px;
-            background: #2196f3;
-            color: white;
-            border-radius: 2px;
+            padding: 4px 10px;
+            background: var(--link-color);
+            color: #ffffff; /* Text always white on button */
+            border-radius: 3px;
             text-decoration: none;
-            font-size: 12px;
-            transition: all 0.2s;
+            font-size: 11px;
+            font-weight: 500;
+            transition: opacity 0.2s;
+            white-space: nowrap;
         }
         
+        [data-theme="dark"] .link-cell a {
+            color: #000000; /* Text black on light blue button in dark mode for contrast */
+        }
+
         .link-cell a:hover {
-            background: #1976d2;
+            opacity: 0.85;
         }
         
         .language-badge {
@@ -259,10 +273,14 @@
             font-size: 10px;
             font-weight: 500;
             margin-left: 4px;
+            opacity: 0.8;
         }
         
         .lang-id { background: #ffebee; color: #c62828; }
         .lang-en { background: #e0f2f1; color: #00695c; }
+        
+        [data-theme="dark"] .lang-id { background: #b71c1c; color: #ffcdd2; }
+        [data-theme="dark"] .lang-en { background: #004d40; color: #b2dfdb; }
         
         .no-results {
             text-align: center;
@@ -285,7 +303,7 @@
                 border-left: none;
                 padding-left: 0;
                 margin-left: 0;
-                width: 100%; /* Break to new line on smaller screens */
+                width: 100%;
                 border-top: 1px solid var(--border-light);
                 padding-top: 10px;
             }
@@ -386,8 +404,8 @@
                         <th style="width: 8%;" id="thYear">Tahun</th>
                         <th style="width: 12%;" id="thPeriod">Periode</th>
                         <th style="width: 12%;" id="thCategory">Kategori</th>
-                        <th style="width: 45%;" id="thTitle">Judul</th>
-                        <th style="width: 18%;" id="thLink">Link</th>
+                        <th style="width: 58%;" id="thTitle">Judul</th>
+                        <th style="width: 5%; white-space: nowrap;" id="thLink">Link</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
@@ -471,10 +489,6 @@
             document.getElementById('pageTitle').textContent = t.pageTitle;
             document.getElementById('searchInput').placeholder = t.searchPlaceholder;
             
-            // Remove standalone labels updates since labels are now inside selects or hidden
-            // document.getElementById('yearLabel').textContent = t.yearLabel;
-            // document.getElementById('monthLabel').textContent = t.monthLabel;
-
             document.getElementById('thYear').textContent = t.year;
             document.getElementById('thPeriod').textContent = t.period;
             document.getElementById('thCategory').textContent = t.category;
@@ -506,7 +520,7 @@
             applyFilters();
         }
         
-        // Data array
+        // Data array - PASTE DATA BARU DI SINI
         const data = [
             // KUESIONER
             { year: 2022, period: "Februari", category: "Kuesioner", title: "Kuesioner Februari (ID)", link: "https://drive.google.com/file/d/1BuHprM2NxEYFnhdhuD8eWHJ7UMP6J820/preview", lang: "ID" },
