@@ -479,11 +479,11 @@
             yearAllOption.textContent = currentLang === 'id' ? 'Semua' : 'All';
             monthAllOption.textContent = currentLang === 'id' ? 'Semua' : 'All';
             
-            // Re-render table to update button text
-            renderTable();
+            // Re-apply filters to show/hide ID/EN files
+            applyFilters();
         }
         
-        // Data array (paste your existing data here)
+        // Data array
         const data = [
             // KUESIONER
             { year: 2022, period: "Februari", category: "Kuesioner", title: "Kuesioner Februari (ID)", link: "https://drive.google.com/file/d/1BuHprM2NxEYFnhdhuD8eWHJ7UMP6J820/preview", lang: "ID" },
@@ -832,7 +832,12 @@
                 const normalizedFilterMonth = normalizeMonth(currentMonthFilter);
                 const matchesMonth = currentMonthFilter === 'all' || normalizedItemMonth === normalizedFilterMonth;
                 
-                return matchesSearch && matchesCategory && matchesYear && matchesMonth;
+                // NEW LOGIC: Filter by Language
+                // Default to 'id' if item.lang is undefined
+                const itemLang = item.lang ? item.lang.toLowerCase() : 'id'; 
+                const matchesLang = itemLang === currentLang;
+
+                return matchesSearch && matchesCategory && matchesYear && matchesMonth && matchesLang;
             });
             
             renderTable();
@@ -877,7 +882,9 @@
         // Initialize
         document.getElementById('totalCount').textContent = data.length;
         populateYearFilter();
-        renderTable();
+        
+        // Trigger initial filter to match default language (ID)
+        applyFilters(); 
     </script>
 </body>
 </html>
