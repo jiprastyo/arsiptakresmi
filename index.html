@@ -96,6 +96,7 @@
             background: var(--button-hover);
         }
         
+        /* Modified Controls Layout */
         .controls {
             padding: 10px 15px;
             background: var(--bg-secondary);
@@ -107,8 +108,9 @@
         }
         
         .search-box {
-            flex: 1;
-            min-width: 200px;
+            /* Flex grow reduced so filters have space */
+            flex: 0 1 250px; 
+            min-width: 150px;
         }
         
         .search-box input {
@@ -134,8 +136,20 @@
             display: flex;
             gap: 5px;
             flex-wrap: wrap;
+            align-items: center;
         }
         
+        /* New Group for Selects to keep them together */
+        .select-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+            border-left: 1px solid var(--border-light);
+            padding-left: 10px;
+            margin-left: 5px;
+        }
+
         .filter-btn {
             padding: 6px 12px;
             border: 1px solid var(--border-light);
@@ -266,6 +280,20 @@
             font-size: 12px;
         }
         
+        @media (max-width: 900px) {
+            .select-group {
+                border-left: none;
+                padding-left: 0;
+                margin-left: 0;
+                width: 100%; /* Break to new line on smaller screens */
+                border-top: 1px solid var(--border-light);
+                padding-top: 10px;
+            }
+            .search-box {
+                flex: 1 1 100%;
+            }
+        }
+
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
@@ -279,15 +307,6 @@
             .header-controls {
                 width: 100%;
                 justify-content: flex-end;
-            }
-            
-            .controls {
-                flex-direction: column;
-                padding: 8px 10px;
-            }
-            
-            .search-box {
-                width: 100%;
             }
             
             table {
@@ -319,6 +338,7 @@
             <div class="search-box">
                 <input type="text" id="searchInput" placeholder="🔍 Cari...">
             </div>
+            
             <div class="filter-group">
                 <button class="filter-btn active" data-filter="all" data-lang-id="Semua" data-lang-en="All">Semua</button>
                 <button class="filter-btn" data-filter="kuesioner" data-lang-id="Kuesioner" data-lang-en="Questionnaire">Kuesioner</button>
@@ -327,18 +347,14 @@
                 <button class="filter-btn" data-filter="publikasi" data-lang-id="Publikasi" data-lang-en="Publications">Publikasi</button>
                 <button class="filter-btn" data-filter="sejarah" data-lang-id="Sejarah" data-lang-en="History">Sejarah</button>
             </div>
-        </div>
-        
-        <div class="controls" style="padding-top: 8px; border-top: 1px solid var(--border-color);">
-            <div style="width: 100%; display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
-                <span id="yearLabel" style="font-size: 12px; color: var(--text-secondary);">Tahun:</span>
+
+            <div class="select-group">
                 <select id="yearFilter">
-                    <option value="all" data-lang-id="Semua" data-lang-en="All">Semua</option>
+                    <option value="all" data-lang-id="Tahun: Semua" data-lang-en="Year: All">Tahun: Semua</option>
                 </select>
                 
-                <span id="monthLabel" style="font-size: 12px; color: var(--text-secondary); margin-left: 10px;">Bulan:</span>
                 <select id="monthFilter">
-                    <option value="all" data-lang-id="Semua" data-lang-en="All">Semua</option>
+                    <option value="all" data-lang-id="Bulan: Semua" data-lang-en="Month: All">Bulan: Semua</option>
                     <option value="januari">Januari / January</option>
                     <option value="februari">Februari / February</option>
                     <option value="maret">Maret / March</option>
@@ -353,7 +369,7 @@
                     <option value="desember">Desember / December</option>
                 </select>
                 
-                <button id="resetFilters" class="toggle-btn" style="margin-left: auto;" data-lang-id="Reset" data-lang-en="Reset">Reset</button>
+                <button id="resetFilters" class="toggle-btn" data-lang-id="Reset" data-lang-en="Reset">Reset</button>
             </div>
         </div>
         
@@ -402,7 +418,9 @@
                 total: 'Total',
                 showing: 'Tampil',
                 noResults: 'Tidak ada hasil yang ditemukan',
-                openFile: 'Buka'
+                openFile: 'Buka',
+                yearLabel: 'Tahun: ',
+                monthLabel: 'Bulan: '
             },
             en: {
                 pageTitle: '📊 Unofficial Archive',
@@ -416,7 +434,9 @@
                 total: 'Total',
                 showing: 'Showing',
                 noResults: 'No results found',
-                openFile: 'Open'
+                openFile: 'Open',
+                yearLabel: 'Year: ',
+                monthLabel: 'Month: '
             }
         };
         
@@ -450,8 +470,11 @@
             // Update static text
             document.getElementById('pageTitle').textContent = t.pageTitle;
             document.getElementById('searchInput').placeholder = t.searchPlaceholder;
-            document.getElementById('yearLabel').textContent = t.year + ':';
-            document.getElementById('monthLabel').textContent = t.month + ':';
+            
+            // Remove standalone labels updates since labels are now inside selects or hidden
+            // document.getElementById('yearLabel').textContent = t.yearLabel;
+            // document.getElementById('monthLabel').textContent = t.monthLabel;
+
             document.getElementById('thYear').textContent = t.year;
             document.getElementById('thPeriod').textContent = t.period;
             document.getElementById('thCategory').textContent = t.category;
@@ -473,11 +496,11 @@
             const resetBtn = document.getElementById('resetFilters');
             resetBtn.textContent = currentLang === 'id' ? 'Reset' : 'Reset';
             
-            // Update year/month filter options
+            // Update year/month filter options default text
             const yearAllOption = document.querySelector('#yearFilter option[value="all"]');
             const monthAllOption = document.querySelector('#monthFilter option[value="all"]');
-            yearAllOption.textContent = currentLang === 'id' ? 'Semua' : 'All';
-            monthAllOption.textContent = currentLang === 'id' ? 'Semua' : 'All';
+            yearAllOption.textContent = currentLang === 'id' ? 'Tahun: Semua' : 'Year: All';
+            monthAllOption.textContent = currentLang === 'id' ? 'Bulan: Semua' : 'Month: All';
             
             // Re-apply filters to show/hide ID/EN files
             applyFilters();
