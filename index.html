@@ -669,6 +669,54 @@
         let currentYearFilter = 'all';
         let currentMonthFilter = 'all';
         
+        // TRANSLATIONS
+        const translations = {
+            id: {
+                pageTitle: '📊 Arsip Tidak Resmi',
+                searchPlaceholder: '🔍 Cari...',
+                year: 'Tahun',
+                month: 'Bulan',
+                period: 'Periode',
+                category: 'Kategori',
+                title: 'Judul',
+                note: 'Catatan',
+                link: 'Link',
+                total: 'Total',
+                showing: 'Tampil',
+                noResults: 'Tidak ada hasil yang ditemukan',
+                openFile: 'Buka',
+                reset: 'Reset',
+                all: 'Semua',
+                questionnaire: 'Kuesioner',
+                classification: 'Klasifikasi',
+                guidelines: 'Pedoman',
+                publications: 'Publikasi',
+                history: 'Sejarah'
+            },
+            en: {
+                pageTitle: '📊 Unofficial Archive',
+                searchPlaceholder: '🔍 Search...',
+                year: 'Year',
+                month: 'Month',
+                period: 'Period',
+                category: 'Category',
+                title: 'Title',
+                note: 'Note',
+                link: 'Link',
+                total: 'Total',
+                showing: 'Showing',
+                noResults: 'No results found',
+                openFile: 'Open',
+                reset: 'Reset',
+                all: 'All',
+                questionnaire: 'Questionnaire',
+                classification: 'Classification',
+                guidelines: 'Guidelines',
+                publications: 'Publications',
+                history: 'History'
+            }
+        };
+        
         // --- HELPER FUNCTIONS ---
         function normalizeMonth(month) {
             if (!month) return '-';
@@ -729,6 +777,65 @@
                 themeToggleBtn.textContent = '☀️ Light';
                 localStorage.setItem('theme', 'dark');
             }
+        });
+
+        // --- LANGUAGE TOGGLE LOGIC ---
+        const langToggleBtn = document.getElementById('langToggle');
+        
+        function updateLanguage() {
+            const t = translations[currentLang];
+            
+            // Update page title
+            document.getElementById('pageTitle').textContent = t.pageTitle;
+            
+            // Update search placeholder
+            document.getElementById('searchInput').placeholder = t.searchPlaceholder;
+            
+            // Update labels
+            document.getElementById('yearLabel').textContent = t.year + ':';
+            document.getElementById('monthLabel').textContent = t.month + ':';
+            
+            // Update table headers
+            document.getElementById('thYear').textContent = t.year;
+            document.getElementById('thPeriod').textContent = t.period;
+            document.getElementById('thCategory').textContent = t.category;
+            document.getElementById('thTitle').textContent = t.title;
+            document.getElementById('thNote').textContent = t.note;
+            document.getElementById('thLink').textContent = t.link;
+            
+            // Update stats
+            document.getElementById('totalLabel').textContent = t.total;
+            document.getElementById('showingLabel').textContent = t.showing;
+            
+            // Update no results text
+            document.getElementById('noResultsText').textContent = t.noResults;
+            
+            // Update filter buttons
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons[0].textContent = t.all;
+            filterButtons[1].textContent = t.questionnaire;
+            filterButtons[2].textContent = t.classification;
+            filterButtons[3].textContent = t.guidelines;
+            filterButtons[4].textContent = t.publications;
+            filterButtons[5].textContent = t.history;
+            
+            // Update reset button
+            document.getElementById('resetFilters').textContent = t.reset;
+            
+            // Update year/month filter first options
+            const yearAllOption = document.querySelector('#yearFilter option[value="all"]');
+            const monthAllOption = document.querySelector('#monthFilter option[value="all"]');
+            if (yearAllOption) yearAllOption.textContent = t.all;
+            if (monthAllOption) monthAllOption.textContent = t.all;
+            
+            // Re-render table to update button text
+            renderTable();
+        }
+        
+        langToggleBtn.addEventListener('click', () => {
+            currentLang = currentLang === 'id' ? 'en' : 'id';
+            langToggleBtn.textContent = currentLang === 'id' ? '🌐 EN' : '🌐 ID';
+            updateLanguage();
         });
 
         // --- CORE LOGIC (SORT & RENDER) ---
@@ -838,11 +945,8 @@
                 const normalizedItemMonth = normalizeMonth(item.period);
                 const normalizedFilterMonth = normalizeMonth(currentMonthFilter);
                 const matchesMonth = currentMonthFilter === 'all' || normalizedItemMonth === normalizedFilterMonth;
-                
-                const itemLang = item.lang ? item.lang.toLowerCase() : 'id'; 
-                const matchesLang = itemLang === currentLang;
 
-                return matchesSearch && matchesCategory && matchesYear && matchesMonth && matchesLang;
+                return matchesSearch && matchesCategory && matchesYear && matchesMonth;
             });
             
             const currentKey = sortConfig.key;
