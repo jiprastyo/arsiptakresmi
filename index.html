@@ -50,7 +50,6 @@
             color: var(--text-primary);
             font-size: 13px;
             transition: background 0.3s, color 0.3s;
-            overflow-x: hidden; /* Prevent body scroll */
         }
         
         .container { max-width: 100%; margin: 0 auto; }
@@ -339,6 +338,7 @@
         [data-theme="dark"] .lang-id { color: #ffcdd2; background: #b71c1c; border-color: #e57373; }
         [data-theme="dark"] .lang-en { color: #b2dfdb; background: #004d40; border-color: #4db6ac; }
 
+        .note-cell { font-size: 12px; color: var(--text-secondary); font-style: italic; }
         .no-results { text-align: center; padding: 40px; color: var(--text-secondary); }
 
         @media (max-width: 768px) {
@@ -503,7 +503,7 @@
             }
         };
 
-        // DATABASE
+        // DATABASE (AUTO-GENERATED FROM CSV)
         const data = [
             { year: 2004, period: "-", category: "Kuesioner", link: "https://drive.google.com/file/d/1LXIKCtMYlDTG3tc7tqGKmPgVyIWyErc8/preview", title: "2004 ENV1", lang: "ID", note: "" },
             { year: 2004, period: "-", category: "Kuesioner", link: "https://drive.google.com/file/d/1qjTIqehm5hFNtmWa0P2ayywB4EJazbOn/preview", title: "2004 ENV2", lang: "ID", note: "" },
@@ -787,17 +787,7 @@
             { year: 1996, period: "August", category: "Kuesioner", link: "https://drive.google.com/file/d/1d0H7esk333PU65Aryg3eB1Pl9MYJ5lop/preview", title: "Questionnaire", lang: "EN", note: "" },
             { year: 1993, period: "August", category: "Kuesioner", link: "https://drive.google.com/file/d/1IYKZCc1kAfPt9CnPHX8XCgpQ5Ejg1rA3/preview", title: "Questionnaire", lang: "EN", note: "" },
             { year: 1990, period: "August", category: "Kuesioner", link: "https://drive.google.com/file/d/1ALxqpqu03Sp1gA3X-VDBLfvWzi9DYga9/preview", title: "Questionnaire", lang: "EN", note: "" },
-            { year: 1989, period: "August", category: "Kuesioner", link: "https://drive.google.com/file/d/1s5d3DmP-RMV9PCFmp3LT29Wv1OpDxBBJ/preview", title: "Questionnaire", lang: "EN", note: "" },
-            { year: 1987, period: "-", category: "Sejarah", link: "https://drive.google.com/file/d/1zkGqLaJDk3Z1NmV9JMQEUcQ8h7RZDRAz/preview", title: "Sakernas Volume 1", lang: "ID", note: "Developmet Studies Volume I Labor Force and Wages Bappenas BPS" },
-            { year: 1988, period: "-", category: "Sejarah", link: "https://drive.google.com/file/d/1jTZK25BGtjVtRQwffXiFPHy79t7wiKqN/preview", title: "Sakernas Volume 2", lang: "ID", note: "Developmet Studies Volume II Wage Data Bappenas BPS" },
-            { year: "-", period: "-", category: "Sejarah", link: "https://dsbb.imf.org/sdds/summary-methodology-base/country/IDN/category/EMP00", title: "Sejarah", lang: "EN", note: "metadata IMF" },
-            { year: "-", period: "-", category: "Sejarah", link: "https://www.rand.org/health/surveys/bps/sakernas.html", title: "Sejarah", lang: "EN", note: "metadata RAND" },
-            { year: 2023, period: "Februari", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2023/06/09/d2c2459397c75a14a92742bf/keadaan-pekerja-di-indonesia-februari-2023.html", title: "Keadaan Pekerja", lang: "ID", note: "" },
-            { year: 2023, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2023/12/08/1b09be03a0951907a562f755/keadaan-pekerja-di-indonesia-agustus-2023.html", title: "Keadaan Pekerja", lang: "ID", note: "" },
-            { year: 2024, period: "Februari", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2024/06/07/bd40ab2fa4fac6c726ab4ad4/keadaan-pekerja-di-indonesia-februari-2024.html", title: "Keadaan Pekerja", lang: "ID", note: "" },
-            { year: 2024, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2024/12/09/e1d598ff2e31af0983bb011b/keadaan-pekerja-di-indonesia-agustus-2024.html", title: "Keadaan Pekerja", lang: "ID", note: "" },
-            { year: 2025, period: "Februari", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2025/06/11/8452fd3b9a9d4110ae7a535d/keadaan-pekerja-di-indonesia-februari-2025.html", title: "Keadaan Pekerja", lang: "ID", note: "" },
-            { year: 2025, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2025/12/23/5fe58c9723acafc73fb95bff/keadaan-pekerja-di-indonesia-agustus-2025.html", title: "Keadaan Pekerja", lang: "ID", note: "" }
+            { year: 1989, period: "August", category: "Kuesioner", link: "https://drive.google.com/file/d/1s5d3DmP-RMV9PCFmp3LT29Wv1OpDxBBJ/preview", title: "Questionnaire", lang: "EN", note: "" }
         ];
         
         let filteredData = [...data];
@@ -828,12 +818,11 @@
         
         function populateYearFilter() {
             const years = [...new Set(data.map(item => item.year))].sort((a, b) => {
-                // Filter out non-numeric years for sorting, treat "-" as 0 or simply put at end
                 const numA = (a === "-") ? -9999 : a;
                 const numB = (b === "-") ? -9999 : b;
-                if (numA === -9999) return 1; // Put "-" at end
+                if (numA === -9999) return 1; 
                 if (numB === -9999) return -1;
-                return numB - numA; // Descending
+                return numB - numA; 
             });
             
             const yearSelect = document.getElementById('yearFilter');
@@ -845,18 +834,39 @@
             });
         }
         
+        // --- DARK MODE LOGIC ---
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const theme = localStorage.getItem('theme');
+
+        // Apply saved theme on load
+        if (theme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            themeToggleBtn.textContent = '☀️ Light';
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            if (isDark) {
+                document.documentElement.setAttribute('data-theme', 'light');
+                themeToggleBtn.textContent = '🌙 Dark';
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeToggleBtn.textContent = '☀️ Light';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
         // --- CORE LOGIC (SORT & RENDER) ---
         function sortData(key) {
-            // Update direction
             if (sortConfig.key === key) {
                 sortConfig.direction = sortConfig.direction === 'asc' ? 'desc' : 'asc';
             } else {
                 sortConfig.key = key;
-                sortConfig.direction = 'asc'; // Default for text columns
-                if (key === 'year' || key === 'period') sortConfig.direction = 'desc'; // Default desc for time
+                sortConfig.direction = 'asc'; 
+                if (key === 'year' || key === 'period') sortConfig.direction = 'desc'; 
             }
 
-            // Update UI Icons
             document.querySelectorAll('th[data-sort]').forEach(th => {
                 th.classList.remove('sort-asc', 'sort-desc');
                 if (th.dataset.sort === key) {
@@ -864,7 +874,6 @@
                 }
             });
 
-            // Sorting Algorithm
             filteredData.sort((a, b) => {
                 let valA, valB;
 
@@ -879,21 +888,19 @@
                     valB = (b[sortConfig.key] || '').toString().toLowerCase();
                 }
 
-                // Primary Sort
                 if (valA < valB) return sortConfig.direction === 'asc' ? -1 : 1;
                 if (valA > valB) return sortConfig.direction === 'asc' ? 1 : -1;
 
-                // Secondary Sort (Stability): Always Year Desc -> Month Desc
                 if (sortConfig.key !== 'year') {
                     let yA = a.year === '-' ? -9999 : a.year;
                     let yB = b.year === '-' ? -9999 : b.year;
-                    if (yA !== yB) return yB - yA; // Descending
+                    if (yA !== yB) return yB - yA; 
                 }
                 
                 if (sortConfig.key !== 'period') {
                     let pA = monthWeight[normalizeMonth(a.period)] || 0;
                     let pB = monthWeight[normalizeMonth(b.period)] || 0;
-                    return pB - pA; // Descending
+                    return pB - pA; 
                 }
 
                 return 0;
@@ -943,7 +950,6 @@
         function applyFilters() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             
-            // 1. Filter
             filteredData = data.filter(item => {
                 const matchesSearch = 
                     item.year.toString().includes(searchTerm) ||
@@ -965,20 +971,8 @@
                 return matchesSearch && matchesCategory && matchesYear && matchesMonth && matchesLang;
             });
             
-            // 2. Sort (Apply existing sort config to filtered results)
-            // We temporarily reset key to re-trigger the sort logic without flipping direction
             const currentKey = sortConfig.key;
-            // Hack to re-apply sort without flipping:
-            // Just call renderTable, but we need the data sorted. 
-            // Let's manually call the internal sort logic inside sortData, 
-            // but for simplicity, we just simulate a click on the same header twice to flip back? No.
-            // Better: Extract sort logic or just reset direction.
-            
-            // Re-apply sort with current config
-            // We need to avoid flipping the direction when calling sortData with same key.
-            // Let's modify sortData to handle a 'maintain' flag, or just manually sort here.
-            
-            // Simplified: Just re-run sort logic (copy-paste for now to avoid refactor complexity)
+            // Re-apply sort without flipping direction manually (simplified)
              filteredData.sort((a, b) => {
                 let valA, valB;
                 if (sortConfig.key === 'year') {
@@ -1010,7 +1004,6 @@
             renderTable();
         }
         
-        // Event listeners
         document.getElementById('searchInput').addEventListener('input', applyFilters);
         
         document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -1046,22 +1039,18 @@
             applyFilters();
         });
 
-        // Add Click Listeners to Headers
         document.querySelectorAll('th[data-sort]').forEach(th => {
             th.addEventListener('click', () => {
                 sortData(th.dataset.sort);
             });
         });
         
-        // Initialize
         document.getElementById('totalCount').textContent = data.length;
         populateYearFilter();
         
-        // Set Initial Sort UI (Year Descending)
         const yearTh = document.querySelector('th[data-sort="year"]');
         if(yearTh) yearTh.classList.add('sort-desc');
         
-        // Initial Render
         applyFilters(); 
     </script>
 </body>
