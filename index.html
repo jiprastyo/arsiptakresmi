@@ -19,30 +19,28 @@
             --button-active: #333333;
             --button-active-text: #ffffff;
             --link-color: #2196f3;
+            --sort-icon-color: #999;
         }
         
         /* AMOLED DARK MODE PALETTE */
         [data-theme="dark"] {
-            --bg-primary: #000000;       /* True Black */
-            --bg-secondary: #121212;     /* Material Dark Surface */
-            --bg-hover: #1a1a1a;         /* Slight Highlight */
-            --bg-header: #000000;        /* Header Blends In */
-            --text-primary: #ffffff;     /* Pure White */
-            --text-secondary: #b0b0b0;   /* Light Gray */
-            --border-color: #333333;     /* Subtle Borders */
+            --bg-primary: #000000;
+            --bg-secondary: #121212;
+            --bg-hover: #1a1a1a;
+            --bg-header: #000000;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --border-color: #333333;
             --border-light: #404040;
             --button-bg: #121212;
             --button-hover: #222222;
             --button-active: #ffffff;
             --button-active-text: #000000;
-            --link-color: #64b5f6;       /* Lighter Blue for Dark Mode */
+            --link-color: #64b5f6;
+            --sort-icon-color: #666;
         }
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: 'Segoe UI', 'Arial', sans-serif;
@@ -54,11 +52,7 @@
             transition: background-color 0.3s, color 0.3s;
         }
         
-        .container {
-            max-width: 100%;
-            margin: 0;
-            background: var(--bg-primary);
-        }
+        .container { max-width: 100%; margin: 0; background: var(--bg-primary); }
         
         .header {
             background: var(--bg-primary);
@@ -72,17 +66,9 @@
             gap: 10px;
         }
         
-        .header h1 {
-            font-size: 18px;
-            margin: 0;
-            font-weight: 600;
-        }
+        .header h1 { font-size: 18px; margin: 0; font-weight: 600; }
         
-        .header-controls {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
+        .header-controls { display: flex; gap: 8px; align-items: center; }
         
         .toggle-btn {
             padding: 5px 12px;
@@ -95,9 +81,7 @@
             transition: all 0.2s;
         }
         
-        .toggle-btn:hover {
-            background: var(--button-hover);
-        }
+        .toggle-btn:hover { background: var(--button-hover); }
         
         .controls {
             padding: 10px 15px;
@@ -109,10 +93,7 @@
             align-items: center;
         }
         
-        .search-box {
-            flex: 0 1 250px; 
-            min-width: 150px;
-        }
+        .search-box { flex: 0 1 250px; min-width: 150px; }
         
         .search-box input {
             width: 100%;
@@ -124,21 +105,9 @@
             font-size: 13px;
         }
         
-        .search-box input::placeholder {
-            color: var(--text-secondary);
-        }
+        .search-box input:focus { outline: none; border-color: var(--text-secondary); }
         
-        .search-box input:focus {
-            outline: none;
-            border-color: var(--text-secondary);
-        }
-        
-        .filter-group {
-            display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
+        .filter-group { display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
         
         .select-group {
             display: flex;
@@ -161,9 +130,7 @@
             transition: all 0.2s;
         }
         
-        .filter-btn:hover {
-            background: var(--button-hover);
-        }
+        .filter-btn:hover { background: var(--button-hover); }
         
         .filter-btn.active {
             background: var(--button-active);
@@ -181,15 +148,9 @@
             color: var(--text-secondary);
         }
         
-        .table-container {
-            overflow-x: auto;
-        }
+        .table-container { overflow-x: auto; }
         
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: var(--bg-primary);
-        }
+        table { width: 100%; border-collapse: collapse; background: var(--bg-primary); }
         
         thead {
             background: var(--bg-header);
@@ -204,7 +165,37 @@
             font-weight: 600;
             font-size: 12px;
             white-space: nowrap;
+            cursor: pointer; /* Menandakan bisa diklik */
+            user-select: none;
+            position: relative;
         }
+
+        th:hover {
+            background-color: var(--bg-hover);
+        }
+
+        /* Sort Icons */
+        th::after {
+            content: '↕';
+            font-size: 10px;
+            margin-left: 5px;
+            color: var(--sort-icon-color);
+            opacity: 0.3;
+        }
+
+        th.sort-asc::after {
+            content: '▲';
+            opacity: 1;
+        }
+
+        th.sort-desc::after {
+            content: '▼';
+            opacity: 1;
+        }
+        
+        /* Non-sortable column (No) */
+        th.no-sort { cursor: default; }
+        th.no-sort::after { content: ''; }
         
         td {
             padding: 6px 12px;
@@ -213,17 +204,8 @@
             vertical-align: middle;
         }
         
-        tbody tr {
-            transition: background 0.1s;
-        }
-        
-        tbody tr:hover {
-            background: var(--bg-hover);
-        }
-        
-        tbody tr.hidden {
-            display: none;
-        }
+        tbody tr { transition: background 0.1s; }
+        tbody tr:hover { background: var(--bg-hover); }
         
         .category-cell {
             display: inline-block;
@@ -259,13 +241,8 @@
             white-space: nowrap;
         }
         
-        [data-theme="dark"] .link-cell a {
-            color: #000000;
-        }
-
-        .link-cell a:hover {
-            opacity: 0.85;
-        }
+        [data-theme="dark"] .link-cell a { color: #000000; }
+        .link-cell a:hover { opacity: 0.85; }
         
         .language-badge {
             display: inline-block;
@@ -279,7 +256,6 @@
         
         .lang-id { background: #ffebee; color: #c62828; }
         .lang-en { background: #e0f2f1; color: #00695c; }
-        
         [data-theme="dark"] .lang-id { background: #b71c1c; color: #ffcdd2; }
         [data-theme="dark"] .lang-en { background: #004d40; color: #b2dfdb; }
         
@@ -314,38 +290,14 @@
                 border-top: 1px solid var(--border-light);
                 padding-top: 10px;
             }
-            .search-box {
-                flex: 1 1 100%;
-            }
+            .search-box { flex: 1 1 100%; }
         }
 
         @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .header h1 {
-                font-size: 16px;
-            }
-            
-            .header-controls {
-                width: 100%;
-                justify-content: flex-end;
-            }
-            
-            table {
-                font-size: 12px;
-            }
-            
-            th, td {
-                padding: 6px 8px;
-            }
-            
-            .filter-btn {
-                font-size: 11px;
-                padding: 5px 10px;
-            }
+            .header { flex-direction: column; align-items: flex-start; }
+            .header-controls { width: 100%; justify-content: flex-end; }
+            table { font-size: 12px; }
+            th, td { padding: 6px 8px; }
         }
     </style>
 </head>
@@ -407,13 +359,13 @@
             <table id="dataTable">
                 <thead>
                     <tr>
-                        <th style="width: 1%; white-space: nowrap;">No</th>
-                        <th style="width: 1%; white-space: nowrap;" id="thYear">Tahun</th>
-                        <th style="width: 1%; white-space: nowrap;" id="thPeriod">Periode</th>
-                        <th style="width: 1%; white-space: nowrap;" id="thCategory">Kategori</th>
-                        <th style="width: 1%; white-space: nowrap;" id="thLink">Link</th>
-                        <th style="width: auto;" id="thTitle">Judul</th>
-                        <th style="width: 20%;" id="thNote">Catatan</th>
+                        <th style="width: 1%; white-space: nowrap;" class="no-sort">No</th>
+                        <th style="width: 1%; white-space: nowrap;" id="thYear" data-sort="year">Tahun</th>
+                        <th style="width: 1%; white-space: nowrap;" id="thPeriod" data-sort="period">Periode</th>
+                        <th style="width: 1%; white-space: nowrap;" id="thCategory" data-sort="category">Kategori</th>
+                        <th style="width: 1%; white-space: nowrap;" class="no-sort" id="thLink">Link</th>
+                        <th style="width: auto;" id="thTitle" data-sort="title">Judul</th>
+                        <th style="width: 20%;" id="thNote" data-sort="note">Catatan</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
@@ -468,6 +420,31 @@
             }
         };
         
+        // Month Weight for Sorting
+        const monthWeight = {
+            'januari': 1, 'january': 1,
+            'februari': 2, 'february': 2,
+            'maret': 3, 'march': 3,
+            'april': 4,
+            'mei': 5, 'may': 5,
+            'juni': 6, 'june': 6,
+            'juli': 7, 'july': 7,
+            'agustus': 8, 'august': 8,
+            'september': 9,
+            'oktober': 10, 'october': 10,
+            'november': 11,
+            'desember': 12, 'december': 12,
+            '-': 0
+        };
+
+        // Sort State
+        let sortConfig = {
+            key: 'year', // default sort key
+            direction: 'desc', // default sort direction
+            secondaryKey: 'period',
+            secondaryDirection: 'desc'
+        };
+
         // Toggle language
         document.getElementById('langToggle').addEventListener('click', function() {
             currentLang = currentLang === 'id' ? 'en' : 'id';
@@ -494,8 +471,6 @@
         // Update language
         function updateLanguage() {
             const t = translations[currentLang];
-            
-            // Update static text
             document.getElementById('pageTitle').textContent = t.pageTitle;
             document.getElementById('searchInput').placeholder = t.searchPlaceholder;
             
@@ -509,236 +484,277 @@
             document.getElementById('showingLabel').textContent = t.showing;
             document.getElementById('noResultsText').textContent = t.noResults;
             
-            // Update filter buttons
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 const key = currentLang === 'id' ? 'data-lang-id' : 'data-lang-en';
-                if (btn.hasAttribute(key)) {
-                    btn.textContent = btn.getAttribute(key);
-                }
+                if (btn.hasAttribute(key)) btn.textContent = btn.getAttribute(key);
             });
             
-            // Update reset button
             const resetBtn = document.getElementById('resetFilters');
             resetBtn.textContent = currentLang === 'id' ? 'Reset' : 'Reset';
             
-            // Update year/month filter options default text
             const yearAllOption = document.querySelector('#yearFilter option[value="all"]');
             const monthAllOption = document.querySelector('#monthFilter option[value="all"]');
             yearAllOption.textContent = currentLang === 'id' ? 'Tahun: Semua' : 'Year: All';
             monthAllOption.textContent = currentLang === 'id' ? 'Bulan: Semua' : 'Month: All';
             
-            // Re-apply filters to show/hide ID/EN files
             applyFilters();
         }
         
-        // Data array - PASTE DATA BARU DARI CSV DI SINI
+        // --- DATABASE TERBARU ---
         const data = [
-            { year: "-", period: "-", category: "Sejarah", title: "Sakernas Volume 1", link: "https://drive.google.com/file/d/1zkGqLaJDk3Z1NmV9JMQEUcQ8h7RZDRAz/preview", lang: "ID", note: "-" },
-            { year: "-", period: "-", category: "Sejarah", title: "Sakernas Volume 2", link: "https://drive.google.com/file/d/1jTZK25BGtjVtRQwffXiFPHy79t7wiKqN/preview", lang: "ID", note: "-" },
-            { year: "-", period: "-", category: "Sejarah", title: "Sejarah Sakernas - IMF", link: "https://drive.google.com/file/d/1gf_d27a7cxoWk5T_vnqSNFNE9zbApE26/preview", lang: "EN", note: "-" },
-            { year: "-", period: "-", category: "Sejarah", title: "Sejarah Sakernas - RAND", link: "https://drive.google.com/file/d/16sd2Kq87myTj-nDrie6tK2yllQx4LvR9/preview", lang: "EN", note: "-" },
-            { year: 2025, period: "Agustus", category: "Publikasi", title: "Booklet", link: "https://www.bps.go.id/id/publication/2026/01/12/7cafd1df082c81784e0e15f8/booklet-sakernas-agustus-2025.html", lang: "ID", note: "-" },
-            { year: 2025, period: "Februari", category: "Publikasi", title: "Booklet", link: "https://www.bps.go.id/id/publication/2025/07/14/90a6b20c25c63176d23ab46c/booklet-sakernas-februari-2025.html", lang: "ID", note: "-" },
-            { year: 2022, period: "Februari", category: "Publikasi", title: "Keadaan Angkatan Kerja", link: "https://drive.google.com/file/d/13hcHDnEuopItYYxiqEjqogpgYIW6CvGv/preview", lang: "ID", note: "-" },
-            { year: 2022, period: "Februari", category: "Publikasi", title: "KILM", link: "https://drive.google.com/file/d/1yyMpUIjl1Oe53WmZ3JcyqBoKhwJsdLwB/preview", lang: "ID", note: "-" },
-            { year: 2022, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1ZZa8286OMRAgnKr85mHwjSKtqMWBUtUC/preview", lang: "ID", note: "-" },
-            { year: 2022, period: "Februari", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1BuHprM2NxEYFnhdhuD8eWHJ7UMP6J820/preview", lang: "ID", note: "-" },
-            { year: 2023, period: "Februari", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1Zkqhm9rm1Xyn4PuknYnhWBLHt_8N4OeO/preview", lang: "ID", note: "-" },
-            { year: 2022, period: "Agustus", category: "Pedoman", title: "Pedoman Pencacahan", link: "https://drive.google.com/file/d/10r13KjcclH-NVuLvCtmbajZXCvludr4g/preview", lang: "ID", note: "-" },
-            { year: 2022, period: "Februari", category: "Pedoman", title: "Pedoman Pencacahan", link: "https://drive.google.com/file/d/1HRWs4bwJSuJLxSp4DFmhPu9DKf3cMyLn/preview", lang: "ID", note: "-" },
-            { year: 2022, period: "Agustus", category: "Pedoman", title: "Pedoman Pengawasan", link: "https://drive.google.com/file/d/1LvW18nGErcNfKFLynDh3OnqF61dpe3eJ/preview", lang: "ID", note: "-" },
-            { year: 2022, period: "Februari", category: "Pedoman", title: "Pedoman Pengawasan", link: "https://drive.google.com/file/d/1zKgKU_3SGBhzXi32qltyIww9-KL542-4/preview", lang: "ID", note: "-" },
-            { year: 2022, period: "Februari", category: "Publikasi", title: "Profil Pekerja", link: "https://drive.google.com/file/d/1GhxRbQYzQtTulfKegTKmP6lWj5t8ArDR/preview", lang: "ID", note: "-" },
-            { year: 2022, period: "Februari", category: "Publikasi", title: "Profil Pendapatan", link: "https://drive.google.com/file/d/1-UmGl183pj5RGoirJBJ7ZY_2dfDLQUew/preview", lang: "ID", note: "-" },
-            { year: 2023, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1eEeglx_SBJxg3_zs7nyJo9iGrjNcWjoU/preview", lang: "ID", note: "-" },
-            { year: 2024, period: "Februari", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1fVI32P5as6jmszrkKEjHmadu9LGXG1NU/preview", lang: "ID", note: "-" },
-            { year: 2024, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1n7XXbGnTDGCmah0NM0k7ILIzEy1joXM9/preview", lang: "ID", note: "-" },
-            { year: 2025, period: "Februari", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1SxeXN8bG-9EBwW-CklnoEcUyZPHfbUZB/preview", lang: "ID", note: "-" },
-            { year: 2025, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/144Jn0sTv4OKUv2j9Oh51fY1W4s_bOMUN/preview", lang: "ID", note: "-" },
-            { year: 2025, period: "November", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1NE0BzLG9mF_xHzhplyfYeWvuzlFNN-SR/preview", lang: "ID", note: "-" },
-            { year: 2022, period: "February", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1jhOStLIndDMs1UZsXBDyPo_NEL1MW6a2/preview", lang: "EN", note: "-" },
-            { year: 2024, period: "Agustus", category: "Publikasi", title: "Booklet", link: "https://www.bps.go.id/id/publication/2024/12/20/145b7ca9b2e159c6c0493290/booklet-sakernas-agustus-2024.html", lang: "ID", note: "-" },
-            { year: 2024, period: "Februari", category: "Publikasi", title: "Booklet", link: "https://www.bps.go.id/id/publication/2024/07/05/0455778ea851bbeda66890a8/booklet-sakernas-februari-2024.html", lang: "ID", note: "-" },
-            { year: 2023, period: "Agustus", category: "Publikasi", title: "Booklet", link: "https://www.bps.go.id/id/publication/2023/12/22/ffb3e2d42b94d727d97e78d8/booklet-survei-angkatan-kerja-nasional-agustus-2023.html", lang: "ID", note: "-" },
-            { year: 2023, period: "Februari", category: "Publikasi", title: "Booklet", link: "https://www.bps.go.id/id/publication/2023/07/07/40a0b3f1fd46be1a5edbae1d/booklet-survei-angkatan-kerja-nasional-februari-2023.html", lang: "ID", note: "-" },
-            { year: 2022, period: "Agustus", category: "Publikasi", title: "Booklet", link: "https://www.bps.go.id/id/publication/2023/12/22/ffb3e2d42b94d727d97e78d8/booklet-survei-angkatan-kerja-nasional-agustus-2023.html", lang: "ID", note: "-" },
-            { year: 2022, period: "Februari", category: "Publikasi", title: "Booklet", link: "https://www.bps.go.id/id/publication/2023/07/07/40a0b3f1fd46be1a5edbae1d/booklet-survei-angkatan-kerja-nasional-februari-2023.html", lang: "ID", note: "-" },
-            { year: 2021, period: "Agustus", category: "Publikasi", title: "Keadaan Angkatan Kerja", link: "https://drive.google.com/file/d/1-3injWJFD9ucuv8q5-iPkEHw7V__cSEc/preview", lang: "ID", note: "-" },
-            { year: 2021, period: "Februari", category: "Publikasi", title: "Keadaan Angkatan Kerja", link: "https://drive.google.com/file/d/1sjE3so5e1EvbWSsQOZ9fZmqI_2KT1aqN/preview", lang: "ID", note: "-" },
-            { year: 2021, period: "Agustus", category: "Publikasi", title: "KILM", link: "https://drive.google.com/file/d/1Fcz4KZjy0rUVH2UXTAtdiascVi4dUDOY/preview", lang: "ID", note: "-" },
-            { year: 2021, period: "Februari", category: "Publikasi", title: "KILM", link: "https://drive.google.com/file/d/1jykd9pDrvskWSv-HvpIxwHgWow1_uvPE/preview", lang: "ID", note: "-" },
-            { year: 2021, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1ajPf3dy3EOgmpoRxdjy0iLsGFEzg96N7/preview", lang: "ID", note: "-" },
-            { year: 2021, period: "Februari", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1v3CcJDlwePL-b5WuZur4q3hkuUALxZlb/preview", lang: "ID", note: "-" },
-            { year: 2021, period: "Agustus", category: "Publikasi", title: "Lanjut Usia", link: "https://drive.google.com/file/d/1ID57yw4HLHaYVxt-638VkgxqYRgSW4kU/preview", lang: "ID", note: "-" },
-            { year: 2021, period: "Agustus", category: "Publikasi", title: "Mobilitas", link: "https://drive.google.com/file/d/1H8a7GbuMJWJOXwHR0kCHM6G8T6t_N_oP/preview", lang: "ID", note: "-" },
-            { year: 2021, period: "Agustus", category: "Pedoman", title: "Pedoman Pencacahan", link: "https://drive.google.com/file/d/1PUk0wtNfSrWHZVc8KJZBCJUssyxqHW0C/preview", lang: "ID", note: "-" },
-            { year: 2021, period: "Februari", category: "Pedoman", title: "Pedoman Pencacahan", link: "https://drive.google.com/file/d/1NIKkvrau3Ga5iozmgakK73tuUg6azkpq/preview", lang: "ID", note: "-" },
-            { year: 2021, period: "Agustus", category: "Pedoman", title: "Pedoman Pengawasan", link: "https://drive.google.com/file/d/1-X8D8Dq72z5LJPZ5mg2JWZAPSwSj1SBh/preview", lang: "ID", note: "-" },
-            { year: 2021, period: "Februari", category: "Pedoman", title: "Pedoman Pengawasan", link: "https://drive.google.com/file/d/1foxww7NPhPKzJIoS1rQe-7Qb-V-25Anr/preview", lang: "ID", note: "-" },
-            { year: 2021, period: "Agustus", category: "Publikasi", title: "Pekerjaan Layak", link: "https://drive.google.com/file/d/1UZhro_XXi_3_YxU7StZoiqqQkB_L7Dxx/preview", lang: "ID", note: "-" },
-            { year: 2021, period: "Agustus", category: "Publikasi", title: "Pemuda", link: "https://drive.google.com/file/d/1OYDikKYHnouiId9n2jibZJNUDxe6V394/preview", lang: "ID" },
-            { year: 2021, period: "Agustus", category: "Publikasi", title: "Profil Pekerja", link: "https://drive.google.com/file/d/1ZAzXn9fHJKolL8ElWM95CSefa6s6pVRK/preview", lang: "ID", note: "-" },
-            { year: 2021, period: "Februari", category: "Publikasi", title: "Profil Pekerja", link: "https://drive.google.com/file/d/1Fbg4cEnn8uKWhqD9dNY28hgZPuAaEQCb/preview", lang: "ID", note: "-" },
-            { year: 2021, period: "Agustus", category: "Publikasi", title: "Profil Pendapatan", link: "https://drive.google.com/file/d/1jmsHgQ60RSdYMYk1ElAes7dZXqgIrJVm/preview", lang: "ID", note: "-" },
-            { year: 2021, period: "Februari", category: "Publikasi", title: "Profil Pendapatan", link: "https://drive.google.com/file/d/17GNNvjjQiqcVRqjWwwoq93IEJeioqbI5/preview", lang: "ID" },
-            { year: 2021, period: "Agustus", category: "Publikasi", title: "Publikasi Pandemi", link: "https://drive.google.com/file/d/1YisHi7VZVCbBq66jDnONsSOp4nXQfUgE/preview", lang: "ID", note: "-" },
-            { year: 2021, period: "August", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1AUsmVp3mbdz22OqYRzZXe_VvvW_NK1ep/preview", lang: "EN", note: "-" },
-            { year: 2021, period: "February", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/17ww4VfzZcKFDHB2NXvMy2ANmtQncRrlH/preview", lang: "EN", note: "-" },
-            { year: 2021, period: "Agustus", category: "Publikasi", title: "Booklet", link: "https://www.bps.go.id/id/publication/2021/12/22/52d405e2dc5dc6f2ba57bf83/booklet-survei-angkatan-kerja-nasional-agustus-2021.html", lang: "ID", note: "-" },
-            { year: 2021, period: "Februari", category: "Publikasi", title: "Booklet", link: "https://www.bps.go.id/id/publication/2021/08/09/790fa89d429d86821c12f57b/booklet-survei-angkatan-kerja-nasional-februari-2021.html", lang: "ID", note: "-" },
-            { year: 2021, period: "Desember", category: "Publikasi", title: "Booklet", link: "https://www.bps.go.id/id/publication/2021/12/22/42c332115ba2a6fb0f36590c/booklet-keselamatan-dan-kesehatan-pekerja-di-masa-pandemi-covid-19.html", lang: "ID", note: "-" },
-            { year: 2020, period: "Agustus", category: "Publikasi", title: "Booklet", link: "https://www.bps.go.id/id/publication/2020/12/23/d8b9a75ce826ddafbddb9657/booklet-survei-angkatan-kerja-nasional-agustus-2020.html", lang: "ID", note: "-" },
-            { year: 2020, period: "Februari", category: "Publikasi", title: "Booklet", link: "https://www.bps.go.id/id/publication/2020/08/28/2aaf3f1339f9295704cb198f/booklet-survei-angkatan-kerja-nasional-februari-2020.html", lang: "ID", note: "-" },
-            { year: 2020, period: "-", category: "Klasifikasi", title: "Buku KBLI 2020", link: "https://drive.google.com/file/d/1Z1Uub1sqsAKts2RrAVA8WtSbb-kf_lEm/preview", lang: "ID", note: "-" },
-            { year: 2020, period: "Agustus", category: "Publikasi", title: "Gender", link: "https://drive.google.com/file/d/1ZCvS9M8colbXwuUj6S1jarRFsaA1i6eW/preview", lang: "ID", note: "-" },
-            { year: 2020, period: "Agustus", category: "Publikasi", title: "Keadaan Angkatan Kerja", link: "https://drive.google.com/file/d/11cCpEYqzIg7Qu4d4R9pQ645-bBWK0bMq/preview", lang: "ID", note: "-" },
-            { year: 2020, period: "Februari", category: "Publikasi", title: "Keadaan Angkatan Kerja", link: "https://drive.google.com/file/d/1KPrWONpufbxZlr3dYpVB2_EWOsDoObtT/preview", lang: "ID", note: "-" },
-            { year: 2020, period: "Agustus", category: "Publikasi", title: "KILM", link: "https://drive.google.com/file/d/1FxOcbzv7Qn1pBM5rjnAN_YvnV5bf-KZT/preview", lang: "ID", note: "-" },
-            { year: 2020, period: "Februari", category: "Publikasi", title: "KILM", link: "https://drive.google.com/file/d/15RgG4LE00JY3jHruML1RI32Hz17usMcv/preview", lang: "ID", note: "-" },
-            { year: 2020, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1uopRLxDlg161u4cvaiX8SmDryY8J-ELv/preview", lang: "ID", note: "-" },
-            { year: 2020, period: "Februari", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/12YtOpVRgoAw7Ca99IXL0dhcB_NDeZH5r/preview", lang: "ID", note: "-" },
-            { year: 2020, period: "Agustus", category: "Publikasi", title: "Lanjut Usia", link: "https://drive.google.com/file/d/1Rw1b85BBbmFUIOUP66j9swR7P_RW9icj/preview", lang: "ID", note: "-" },
-            { year: 2020, period: "Agustus", category: "Publikasi", title: "Mobilitas", link: "https://drive.google.com/file/d/1mokvVjHK08mAJICWzWI40zzqwQ6sKY-0/preview", lang: "ID" },
-            { year: 2020, period: "Agustus", category: "Pedoman", title: "Pedoman Pencacahan", link: "https://drive.google.com/file/d/16eZcL79oliUpVsZnUUJywO5kRaoN7wvU/preview", lang: "ID", note: "-" },
-            { year: 2020, period: "Februari", category: "Pedoman", title: "Pedoman Pencacahan", link: "https://drive.google.com/file/d/1l5lY-Zh7QB2EB9NQ0VV_Soc9Kgp_JJEV/preview", lang: "ID" },
-            { year: 2020, period: "Agustus", category: "Pedoman", title: "Pedoman Pengawasan", link: "https://drive.google.com/file/d/1VLj2GG6D3o_c_8Ddlrw1jbEKLM3vw8SG/preview", lang: "ID" },
-            { year: 2020, period: "Februari", category: "Pedoman", title: "Pedoman Pengawasan", link: "https://drive.google.com/file/d/1oz6pdfzFyFJKPb1KhAo7YXKzdpXLiTDh/preview", lang: "ID" },
-            { year: 2020, period: "Agustus", category: "Publikasi", title: "Pekerjaan Layak", link: "https://drive.google.com/file/d/1I132qxmXNH8gwdWqb0mKwhNVEqQlGq7A/preview", lang: "ID" },
-            { year: 2020, period: "Agustus", category: "Publikasi", title: "Pemuda", link: "https://drive.google.com/file/d/1fQwHbYJwg9VJNqQ_nVKcLeWlwYg5cQC3/preview", lang: "ID" },
-            { year: 2020, period: "Agustus", category: "Publikasi", title: "Profil Pekerja", link: "https://drive.google.com/file/d/1JQK1LApo8AleqbMk4RJNtMTnQTTI0EaB/preview", lang: "ID" },
-            { year: 2020, period: "Februari", category: "Publikasi", title: "Profil Pekerja", link: "https://drive.google.com/file/d/1cI2F71xkotuhJUcyC0TTHX5gbksrlYWO/preview", lang: "ID" },
-            { year: 2020, period: "Agustus", category: "Publikasi", title: "Profil Pendapatan", link: "https://drive.google.com/file/d/1h8vu689i8FWzM-HGea7l3YBqASzrSOLE/preview", lang: "ID" },
-            { year: 2020, period: "Februari", category: "Publikasi", title: "Profil Pendapatan", link: "https://drive.google.com/file/d/1VmpUcyll4CrVFLUC6yFAlpAm6pTO6olK/preview", lang: "ID" },
-            { year: 2020, period: "August", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1bA3KD1yMlzU6ZhEvznAfK90vooP02hNC/preview", lang: "EN", note: "-" },
-            { year: 2020, period: "February", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1RO2oQh1RfmbZkX-6fHh6fEYF9EZaZ678/preview", lang: "EN", note: "-" },
-            { year: 2019, period: "Agustus", category: "Publikasi", title: "Booklet", link: "https://www.bps.go.id/id/publication/2019/12/10/680c34c3a8c4955c235892c9/booklet-survei-angkatan-kerja-nasional-agustus-2019.html", lang: "ID", note: "-" },
-            { year: 2019, period: "Februari", category: "Publikasi", title: "Booklet", link: "https://www.bps.go.id/id/publication/2019/11/27/5428e1117e138c6d36769363/booklet-survei-angkatan-kerja-nasional-februari-2019.html", lang: "ID", note: "-" },
-            { year: 2019, period: "Agustus", category: "Publikasi", title: "Keadaan Angkatan Kerja", link: "https://drive.google.com/file/d/1CvyRsPKMCXRBoCyAbf4Mc7TiRtCrg8o_/preview", lang: "ID", note: "-" },
-            { year: 2019, period: "Februari", category: "Publikasi", title: "Keadaan Angkatan Kerja", link: "https://drive.google.com/file/d/19YV3eVcu35igU7tF1_-iF-KNSlHXTHrl/preview", lang: "ID" },
-            { year: 2019, period: "Agustus", category: "Publikasi", title: "KILM", link: "https://drive.google.com/file/d/1DPWrYPM42FyPPJpGqg9Nu-v8aNhClCWE/preview", lang: "ID", note: "-" },
-            { year: 2019, period: "Februari", category: "Publikasi", title: "KILM", link: "https://drive.google.com/file/d/1knlyy2JrZFWuRsTq5wydGwgNh3_8aAUL/preview", lang: "ID", note: "-" },
-            { year: 2019, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1plo1IRT6WeG3Hs8l-aBjasvFdlSQj4_4/preview", lang: "ID", note: "-" },
-            { year: 2019, period: "Februari", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1z01GGgbYZxodheoWxb_LSyRXuzuNC-fk/preview", lang: "ID", note: "-" },
-            { year: 2019, period: "Agustus", category: "Publikasi", title: "Lanjut Usia", link: "https://drive.google.com/file/d/1_ubmy4Z7tN2C5hiyPpLW5ZFw3sIyClCG/preview", lang: "ID", note: "-" },
-            { year: 2019, period: "Agustus", category: "Publikasi", title: "Mobilitas", link: "https://drive.google.com/file/d/1sauBOhABocyKzi9lMcMisF_dFgmL8GLB/preview", lang: "ID", note: "-" },
-            { year: 2019, period: "Agustus", category: "Pedoman", title: "Pedoman Pencacahan", link: "https://drive.google.com/file/d/1B2ZOAzVTn-vEt_35w2rzXqbWClntMgsJ/preview", lang: "ID", note: "-" },
-            { year: 2019, period: "Februari", category: "Pedoman", title: "Pedoman Pencacahan", link: "https://drive.google.com/file/d/1zEY-iLYNZ9qUnk5_WZ2wxI_wRWN_yc4G/preview", lang: "ID", note: "-" },
-            { year: 2019, period: "Agustus", category: "Pedoman", title: "Pedoman Pengawasan", link: "https://drive.google.com/file/d/1akWBtwF2CX9BoQoxjuGu_B_jAOz9RwiA/preview", lang: "ID" },
-            { year: 2019, period: "Februari", category: "Pedoman", title: "Pedoman Pengawasan", link: "https://drive.google.com/file/d/1n1OUDgIyWWShxPOVWynG5lVx0cQgsoi8/preview", lang: "ID" },
-            { year: 2019, period: "Agustus", category: "Publikasi", title: "Pekerjaan Layak", link: "https://drive.google.com/file/d/1nyfHj6GSlAq8BnVGNdRq_UQ9_8DbAhom/preview", lang: "ID" },
-            { year: 2019, period: "Agustus", category: "Publikasi", title: "Pemuda", link: "https://drive.google.com/file/d/1ZKWroRa3NMjjmwE9Qe1nD1_GwnbMm_rG/preview", lang: "ID" },
-            { year: 2019, period: "Agustus", category: "Publikasi", title: "Profil Pekerja", link: "https://drive.google.com/file/d/1WpedTYRRsP5Bun904BAa2Z4AiQtRDb1x/preview", lang: "ID" },
-            { year: 2019, period: "Februari", category: "Publikasi", title: "Profil Pekerja", link: "https://drive.google.com/file/d/1YvFIU1as5LRB2dq_vFLB2AP9T3Hy8Tdg/preview", lang: "ID" },
-            { year: 2019, period: "Agustus", category: "Publikasi", title: "Profil Pendapatan", link: "https://drive.google.com/file/d/10XNGlq9FUQSORR_BIz6jBkwY-Y-PDm2a/preview", lang: "ID" },
-            { year: 2019, period: "Februari", category: "Publikasi", title: "Profil Pendapatan", link: "https://drive.google.com/file/d/1g8y7_kvOSu9WElqF1Jdj0aUbLI8KMV3r/preview", lang: "ID" },
-            { year: 2019, period: "August", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1cQGTvxA1lN-JWP0ncSNRUPCblb3JSTS8/preview", lang: "EN", note: "-" },
-            { year: 2019, period: "February", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1BAqy5k2E6abCVShOZq597XemIbFDPfuQ/preview", lang: "EN", note: "-" },
-            { year: 2018, period: "Agustus", category: "Publikasi", title: "Booklet", link: "https://www.bps.go.id/id/publication/2018/12/14/646b4fb626979f3e154e63d7/booklet-survei-angkatan-kerja-nasional-agustus-2018.html", lang: "ID", note: "-" },
-            { year: 2018, period: "Februari", category: "Publikasi", title: "Booklet", link: "https://www.bps.go.id/id/publication/2018/09/28/c49b09bd9fcb72050c51958e/booklet-survei-angkatan-kerja-nasional-februari-2018.html", lang: "ID", note: "-" },
-            { year: 2018, period: "Agustus", category: "Publikasi", title: "Keadaan Angkatan Kerja", link: "https://drive.google.com/file/d/1cQxXGyH_HB288-G0oATf_AIWkfUJnzPU/preview", lang: "ID", note: "-" },
-            { year: 2018, period: "Februari", category: "Publikasi", title: "Keadaan Angkatan Kerja", link: "https://drive.google.com/file/d/19Dnd-jAzpWDJJ7k6JIelZ00S_iZnrU9j/preview", lang: "ID", note: "-" },
-            { year: 2018, period: "Agustus", category: "Publikasi", title: "KILM", link: "https://drive.google.com/file/d/1ic5HHJduJ3pni9fc38ZJ4u8f9M9h7BIF/preview", lang: "ID", note: "-" },
-            { year: 2018, period: "Februari", category: "Publikasi", title: "KILM", link: "https://drive.google.com/file/d/1TYjp5PNHf4OGGVp06dkm1Sdr53svzSqW/preview", lang: "ID", note: "-" },
-            { year: 2018, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/11jo21tnO3dto2jxKCezsWCgJKtFsWJyB/preview", lang: "ID", note: "-" },
-            { year: 2018, period: "Februari", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1ePwRxz19DOlwuXJwncJOcDv5Xc-PwvSl/preview", lang: "ID", note: "-" },
-            { year: 2018, period: "Agustus", category: "Publikasi", title: "Lanjut Usia", link: "https://drive.google.com/file/d/1YlS8S1ODsUmDqBYudFbJvwZyrWj1TgJx/preview", lang: "ID", note: "-" },
-            { year: 2018, period: "Agustus", category: "Publikasi", title: "Mobilitas", link: "https://drive.google.com/file/d/1ppR4LboGK5h5DHrubqXw1WERw7jXKqEi/preview", lang: "ID", note: "-" },
-            { year: 2018, period: "Agustus", category: "Pedoman", title: "Pedoman Pencacahan", link: "https://drive.google.com/file/d/1gXmbSfbWdxtV0z9Ntg7zJgmlHcS5lZ0M/preview", lang: "ID", note: "-" },
-            { year: 2018, period: "Agustus", category: "Pedoman", title: "Pedoman Pengawasan", link: "https://drive.google.com/file/d/17VWA_jN7iMEE5olI1_kwsnDueP6gyNcB/preview", lang: "ID" },
-            { year: 2018, period: "Agustus", category: "Publikasi", title: "Pekerjaan Layak", link: "https://drive.google.com/file/d/1AXI1vfdFrUPf329GdSJZP8xMnPMT6G1O/preview", lang: "ID", note: "-" },
-            { year: 2018, period: "Agustus", category: "Publikasi", title: "Pemuda", link: "https://drive.google.com/file/d/1uCkvmC3d26GBFPCXaRL40v0L6nGiIe5b/preview", lang: "ID" },
-            { year: 2018, period: "Agustus", category: "Publikasi", title: "Profil Pekerja", link: "https://drive.google.com/file/d/1LKAq6t9apWxNJh6yZNNBl_a3CeoG6_XG/preview", lang: "ID" },
-            { year: 2018, period: "Februari", category: "Publikasi", title: "Profil Pekerja", link: "https://drive.google.com/file/d/1vJCM4Q3BlNgLQmMOypB8yDy5Rw6Tvmv3/preview", lang: "ID" },
-            { year: 2018, period: "Agustus", category: "Publikasi", title: "Profil Pendapatan", link: "https://drive.google.com/file/d/19TxmjNSF1RYG6HngGcjRgtuLFTAvd-8k/preview", lang: "ID" },
-            { year: 2018, period: "Februari", category: "Publikasi", title: "Profil Pendapatan", link: "https://drive.google.com/file/d/17EmDJ-c885EROgwSyVNsspe-LaeTsAGR/preview", lang: "ID" },
-            { year: 2018, period: "August", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1F8A-tsO4KxkPvTVSCPAT9BaFe1-rsIO1/preview", lang: "EN", note: "-" },
-            { year: 2018, period: "February", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1SlpfwVZaKWRldKO3iTCKz8W0SQZWGP4T/preview", lang: "EN", note: "-" },
-            { year: 2017, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1yez4L864XGNvfDueFqnRTDT7GIv1Hv9K/preview", lang: "ID", note: "-" },
-            { year: 2017, period: "Februari", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/17Flq9cunsaIvRqvVG4m7kR9e3LadVD42/preview", lang: "ID", note: "-" },
-            { year: 2017, period: "August", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1KlnM6dP25_Wr3G_HCUThcsiHdVXmkpBA/preview", lang: "EN", note: "-" },
-            { year: 2017, period: "February", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1MYj-4sLX6mbsZn19nmV_e-nAXPbGn6xs/preview", lang: "EN", note: "-" },
-            { year: 2016, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1VO1ez6shkuPUwtm907Yp4gSANes-vcFC/preview", lang: "ID", note: "-" },
-            { year: 2016, period: "Februari", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1uR0cw3imxmbs-PF9UH1sZz0lNXQiN6YU/preview", lang: "ID", note: "-" },
-            { year: 2016, period: "August", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1hXbDxandZes1AOT8j1bReORWwKDqNp-S/preview", lang: "EN", note: "-" },
-            { year: 2016, period: "February", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1mIWmtoxzdsGZObg1WMZT38vprGmp2ItK/preview", lang: "EN", note: "-" },
-            { year: 2015, period: "-", category: "Klasifikasi", title: "Buku KBLI 2015", link: "https://drive.google.com/file/d/174k2LqODmNDh46ScuTBypFv0YViLg_E7/preview", lang: "ID", note: "-" },
-            { year: 2015, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1swM3rAmfD3XLOvSyR-I4gZP2yhRgPA6K/preview", lang: "ID", note: "-" },
-            { year: 2015, period: "Februari", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1hktoyHoeTQwnK6OmpePnieelQ7emWu40/preview", lang: "ID", note: "-" },
-            { year: 2015, period: "August", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1DIKRMFcEEkNSL0wLI195S7dPbvUd2vHl/preview", lang: "EN", note: "-" },
-            { year: 2015, period: "February", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1fZ2JT8Juq-4DVyTiMW2TnY1xgmKcJnRE/preview", lang: "EN", note: "-" },
-            { year: 2014, period: "-", category: "Klasifikasi", title: "Buku KBJI 2014", link: "https://drive.google.com/file/d/1U0tuLEMSGHPRBDTlkRkdw1YQhWpJepVC/preview", lang: "ID", note: "-" },
-            { year: 2014, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/10PP5preJgx0yZwVxxanLpa9lbO408G5y/preview", lang: "ID", note: "-" },
-            { year: 2014, period: "Februari", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1oVQQDrRSYtt6vFBZF0vDULAAQpBI5Pbi/preview", lang: "ID", note: "-" },
-            { year: 2014, period: "Mei", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1N65Qrdv5ewob1SDlo--zI-jJ8WMTMiuD/preview", lang: "ID", note: "-" },
-            { year: 2014, period: "August", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1VmVChSiOKiVpP4emjUaxqI9jTWy1JJgX/preview", lang: "EN", note: "-" },
-            { year: 2014, period: "February", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/171QfD3N2FGqqKTWUEsRB0tbOtlEOzw2w/preview", lang: "EN", note: "-" },
-            { year: 2014, period: "May", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1EP95e7jxDmOSkmX08_CLMD-bXtdqLH1F/preview", lang: "EN", note: "-" },
-            { year: 2013, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/109r_2wmO6SVWFyK7Dzm2RihmqJ-o0HdN/preview", lang: "ID", note: "-" },
-            { year: 2013, period: "Februari", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1OfIpaunafoSZ7DjKuotzLr0aDq3T0F7F/preview", lang: "ID", note: "-" },
-            { year: 2013, period: "Mei", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1TVa7Hy_9soVaON57m_iSzBRf7IvsBF9I/preview", lang: "ID", note: "-" },
-            { year: 2013, period: "November", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1xWJsC3ZSI2zUHPT6RVxqD-vGmGjBTTWS/preview", lang: "ID", note: "-" },
-            { year: 2013, period: "August", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1-hKGIBVAIIOTWC7Ew8RIBh9dLOYDrewJ/preview", lang: "EN", note: "-" },
-            { year: 2013, period: "May", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1YgbJknQeWVMKKfqfFaKjz_e7yXatfalf/preview", lang: "EN", note: "-" },
-            { year: 2013, period: "November", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1w2ckkVLojR3rdDv1NgAt_u90573TROJO/preview", lang: "EN", note: "-" },
-            { year: 2012, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1rdDDNGkQF04DCGVpmgjL5EiUcGJAlNTz/preview", lang: "ID", note: "-" },
-            { year: 2012, period: "August", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1wRTys4wMDhWwlo3GaWz8SAgQZApI9sa6/preview", lang: "EN", note: "-" },
-            { year: 2011, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1m6BD1oL8IQTY4URW8UDNoQe4lZqentfQ/preview", lang: "ID", note: "-" },
-            { year: 2011, period: "August", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/16kYSSTRh9QG6R2vAxR-N1vtST4jE2lfV/preview", lang: "EN", note: "-" },
-            { year: 2010, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1B5HyiQJNCmJpRVl7OxLfIgknUy9bpuRg/preview", lang: "ID", note: "-" },
-            { year: 2010, period: "August", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/186y5Ih1kFbWdvlyNQkLEFYr9haPhuw7f/preview", lang: "EN", note: "-" },
-            { year: 2010, period: "February", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1fsG72kV-4h7OcSpvhZbqa7ecPsO196jx/preview", lang: "EN", note: "-" },
-            { year: 2009, period: "-", category: "Klasifikasi", title: "Buku KBLI 2009", link: "https://drive.google.com/file/d/1CbtN6AlPZiVCkvZuLWP4rALkAVPm7IY9/preview", lang: "ID", note: "-" },
-            { year: 2009, period: "-", category: "Klasifikasi", title: "Kode KBLI 2009", link: "https://drive.google.com/file/d/1zXYx9jqOweicyDWi3fC0YTJ75vNkjZM0/preview", lang: "ID" },
-            { year: 2009, period: "Februari", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/164RCkEaxHKSFaLUHfPiNThfLgd_qft_b/preview", lang: "ID", note: "-" },
-            { year: 2009, period: "August", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/10ESkqEHQIKijw8GOztvFOArFnkXDmvDW/preview", lang: "EN", note: "-" },
-            { year: 2008, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1rOR5Iz1DGNSxBsXjJur1Vk_fqF0dO0T9/preview", lang: "ID" },
-            { year: 2008, period: "February", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1QTWoisrf_Ifd9M7LsywbxVkEJm-4-I3N/preview", lang: "EN", note: "-" },
-            { year: 2007, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1XcAvg4RtjRNxZWxW9VMy6vqjIBNlhqjr/preview", lang: "ID" },
-            { year: 2006, period: "Februari", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1hRC9gna3RHbHBhbC0-6VDbb2ULmeitNX/preview", lang: "ID" },
-            { year: 2006, period: "November", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1lQXq9n9s4KuC12ozFIxlwPNLJ9g0uv2I/preview", lang: "ID" },
-            { year: 2006, period: "February", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1fVdP7N8QYhZrS-eNKyeqPHIXJ1LuS8To/preview", lang: "EN", note: "-" },
-            { year: 2006, period: "November", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1D1y_U-a2cDc4azoF4CaC62T19GXyTfpx/preview", lang: "EN", note: "-" },
-            { year: 2005, period: "-", category: "Klasifikasi", title: "Buku KBLI 2005", link: "https://drive.google.com/file/d/19k963QjQDUYam1vS4S4dWzk7YSFTaCfR/preview", lang: "ID" },
-            { year: 2005, period: "-", category: "Klasifikasi", title: "Kode KBLI 2005", link: "https://drive.google.com/file/d/1nfgELonhGXOygDPWe_EJ7ULuxoK3yD4B/preview", lang: "ID" },
-            { year: 2005, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1tQ3Kwsfz-MkmqnrrWS0vFmurwrgRGLA3/preview", lang: "ID" },
-            { year: 2005, period: "Februari", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1UcLbc8khF9rTzsnMmz2eEj9ux0Hp8Az-/preview", lang: "ID" },
-            { year: 2005, period: "August", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1FAeAt0AJCYadzkaABdvuyOMeInHM005S/preview", lang: "EN" },
-            { year: 2005, period: "February", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1aSdUvITzmvwHnSHspYSqR-ybHFITelyl/preview", lang: "EN" },
-            { year: 2004, period: "-", category: "Kuesioner", title: "2004 ENV1", link: "https://drive.google.com/file/d/1LXIKCtMYlDTG3tc7tqGKmPgVyIWyErc8/preview", lang: "ID", note: "-" },
-            { year: 2004, period: "-", category: "Kuesioner", title: "2004 ENV2", link: "https://drive.google.com/file/d/1qjTIqehm5hFNtmWa0P2ayywB4EJazbOn/preview", lang: "ID" },
-            { year: 2004, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1bemkW8Ce5mIfxpCZtymvUXcTMQiW-VjF/preview", lang: "ID", note: "-" },
-            { year: 2003, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1WBJmzpneIwA0tv_A5zVKfVI7S2KonIJ4/preview", lang: "ID", note: "-" },
-            { year: 2003, period: "August", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1HPRS2c5y8SBClosF5KIkPvMQLHHrYu8x/preview", lang: "EN" },
-            { year: 2002, period: "-", category: "Klasifikasi", title: "Buku KBJI 2002", link: "https://drive.google.com/file/d/1_ixIMcXGP79Q3v-cvVTYnTKkAtSIRvC5/preview", lang: "ID" },
-            { year: 2002, period: "-", category: "Klasifikasi", title: "Kode KBJI 2002", link: "https://drive.google.com/file/d/1z9SNTH6qdMqdFmxaGrH4T9BDBXql-VoE/preview", lang: "ID" },
-            { year: 2002, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1WcESB4bGA4hyElmzCx6oHuT_AMBNY-qu/preview", lang: "ID" },
-            { year: 2002, period: "August", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1P4dREkJhigpwrjLnwYY7TRHWB8fv31jF/preview", lang: "EN" },
-            { year: 2001, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1R97gpVGxqaAWaqqZMUrQoKrYJvVJaW1m/preview", lang: "ID" },
-            { year: 2000, period: "-", category: "Klasifikasi", title: "Buku KBLI 2000", link: "https://drive.google.com/file/d/1EqX7OBRDgVfKbJ5zUv3nVrvLhTGZ1Pj_/preview", lang: "ID" },
-            { year: 2000, period: "-", category: "Klasifikasi", title: "Kode KBLI 2000", link: "https://drive.google.com/file/d/1hr_wueqTWoN-3n2b5kyu9RAPSDHyXIDh/preview", lang: "ID" },
-            { year: 2000, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/19hN-0y6YUcZPM-UPa37ySgYsvW2mXYeU/preview", lang: "ID" },
-            { year: 1999, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1WPLYk8U85zQJVhWMAz7OWDZLQXwC5S5w/preview", lang: "ID" },
-            { year: 1998, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1DDtADqhAY8Jcb2PWWY8lKUW14KqSxfiw/preview", lang: "ID" },
-            { year: 1998, period: "August", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1D0_rr4GszoWcIeLaIgugahdf-JDmErgk/preview", lang: "EN" },
-            { year: 1997, period: "-", category: "Klasifikasi", title: "Kode Sektor 1997", link: "https://drive.google.com/file/d/1O-ENWaqqijPBI4aVnn5_Id521N9G6cw4/preview", lang: "ID" },
-            { year: 1997, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/19RFSQglY5QQ1OZVRubyWwV3UF4L8jmcq/preview", lang: "ID" },
-            { year: 1997, period: "August", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1MUjiqs-jrUOMCAU_L5itYWRcvrVRp0wB/preview", lang: "EN" },
-            { year: 1996, period: "-", category: "Klasifikasi", title: "Kode Sektor 1996-1999", link: "https://drive.google.com/file/d/1ev5rW7nMKO1Thj7xqHLX8NRyQcZYXx1i/preview", lang: "ID" },
-            { year: 1996, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1NLN6CXuxxrFib1GZc7revEg17TOTsYEk/preview", lang: "ID" },
-            { year: 1996, period: "August", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1d0H7esk333PU65Aryg3eB1Pl9MYJ5lop/preview", lang: "EN" },
-            { year: 1994, period: "July", category: "Kuesioner", title: "Kuesioner July V1 (ID)", link: "https://drive.google.com/file/d/10mVEQGNw27oJKSQwYnIqI0OSa6V2rbUV/preview", lang: "ID" },
-            { year: 1994, period: "July", category: "Kuesioner", title: "Kuesioner July V2 (ID)", link: "https://drive.google.com/file/d/1TKu_rP2K0LgvUY8CgGMA2Do5V3ZOqh79/preview", lang: "ID" },
-            { year: 1993, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/10p9l6O1dyXUORjLvijSvmmLnRPfgc9SU/preview", lang: "ID" },
-            { year: 1993, period: "August", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1IYKZCc1kAfPt9CnPHX8XCgpQ5Ejg1rA3/preview", lang: "EN" },
-            { year: 1990, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1Ne7MluH3d_clSGKf0ctHKmGI6U1vFbYH/preview", lang: "ID" },
-            { year: 1990, period: "August", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1ALxqpqu03Sp1gA3X-VDBLfvWzi9DYga9/preview", lang: "EN" },
-            { year: 1989, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/153Nvz10ieMa1a0zrPddmPIFhAwYLtO1C/preview", lang: "ID" },
-            { year: 1989, period: "August", category: "Kuesioner", title: "Questionnaire", link: "https://drive.google.com/file/d/1s5d3DmP-RMV9PCFmp3LT29Wv1OpDxBBJ/preview", lang: "EN" },
-            { year: 1987, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1iJ-yQXoX2QJ_KySzeyepU8d5vwYW6kOr/preview", lang: "ID" },
-            { year: 1986, period: "-", category: "Klasifikasi", title: "Kode Sektor 1986-1994", link: "https://docs.google.com/document/d/147QvWKzSV-LlUD-aCWa9TYqAfm6boYzrCoJ8y0y4xZY/preview", lang: "ID" },
-            { year: 1986, period: "Agustus", category: "Kuesioner", title: "Kuesioner", link: "https://drive.google.com/file/d/1BUM5J9BgdSSMHKKBsOX038qoPayqQiCy/preview", lang: "ID" },
-            { year: 1982, period: "-", category: "Kuesioner", title: "Bagian dari Susenas", link: "https://drive.google.com/file/d/1CNnl9Kt42JEqDHz-BrD-1SgFqqo8kKOw/preview", lang: "ID" },
-            { year: 1982, period: "-", category: "Klasifikasi", title: "Kode KJI 1982", link: "https://drive.google.com/file/d/1hr_wueqTWoN-3n2b5kyu9RAPSDHyXIDh/preview", lang: "ID" }
+            { year: 2004, period: "-", category: "Kuesioner", link: "https://drive.google.com/file/d/1LXIKCtMYlDTG3tc7tqGKmPgVyIWyErc8/preview", title: "2004 ENV1", lang: "ID", note: "" },
+            { year: 2004, period: "-", category: "Kuesioner", link: "https://drive.google.com/file/d/1qjTIqehm5hFNtmWa0P2ayywB4EJazbOn/preview", title: "2004 ENV2", lang: "ID", note: "" },
+            { year: 2008, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2009/11/23/069fde9ab6e06cd674e0a608/analisis-mobilitas-tenaga-kerja-hasil-survei-angkatan-kerja-nasional-2008.html", title: "Analisis Mobilitas Tenaga Kerja", lang: "ID", note: "pertama kali terbit" },
+            { year: 2010, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2011/12/09/27c1eafe9ae25b8775753a78/analisis-mobilitas-tenaga-kerja-hasil-survei-angkatan-kerja-nasional-2010.html", title: "Analisis Mobilitas Tenaga Kerja", lang: "ID", note: "" },
+            { year: 2012, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2013/11/04/60be1c892ff94a29ebfcc24b/analisis-mobilitas-tenaga-kerja-hasil-survei-angkatan-kerja-nasional-2012.html", title: "Analisis Mobilitas Tenaga Kerja", lang: "ID", note: "" },
+            { year: 2016, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2017/12/08/a85da15eb324f53f05163351/analisis-mobilitas-tenaga-kerja-hasil-survei-angkatan-kerja-nasional-2016.html", title: "Analisis Mobilitas Tenaga Kerja", lang: "ID", note: "" },
+            { year: 2018, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2019/12/09/4abf897285f4e8265346d8d7/analisis-mobilitas-tenaga-kerja-hasil-survei-angkatan-kerja-nasional-2018.html", title: "Analisis Mobilitas Tenaga Kerja", lang: "ID", note: "" },
+            { year: 2020, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2021/11/17/bf53c37506d4a38a2a700f5a/analisis-mobilitas-tenaga-kerja-hasil-survei-angkatan-kerja-nasional-2020.html", title: "Analisis Mobilitas Tenaga Kerja", lang: "ID", note: "" },
+            { year: 2022, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2023/10/27/83d4aaefa732e79efa75107b/analisis-mobilitas-tenaga-kerja-hasil-sakernas-2022.html", title: "Analisis Mobilitas Tenaga Kerja", lang: "ID", note: "" },
+            { year: 2023, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2024/08/26/b07cde6196c248635467c2af/analisis-mobilitas-tenaga-kerja-hasil-sakernas-2023.html", title: "Analisis Mobilitas Tenaga Kerja", lang: "ID", note: "" },
+            { year: 2024, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2025/08/22/8934c883888698d7acb2e179/analisis-mobilitas-tenaga-kerja-hasil-sakernas-2024.html", title: "Analisis Mobilitas Tenaga Kerja", lang: "ID", note: "" },
+            { year: 1982, period: "-", category: "Kuesioner", link: "https://drive.google.com/file/d/1CNnl9Kt42JEqDHz-BrD-1SgFqqo8kKOw/preview", title: "Bagian dari Susenas", lang: "ID", note: "" },
+            { year: 2018, period: "Februari", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2018/09/28/c49b09bd9fcb72050c51958e/booklet-survei-angkatan-kerja-nasional-februari-2018.html", title: "Booklet", lang: "ID", note: "" },
+            { year: 2018, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2018/12/14/646b4fb626979f3e154e63d7/booklet-survei-angkatan-kerja-nasional-agustus-2018.html", title: "Booklet", lang: "ID", note: "" },
+            { year: 2019, period: "Februari", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2019/11/27/5428e1117e138c6d36769363/booklet-survei-angkatan-kerja-nasional-februari-2019.html", title: "Booklet", lang: "ID", note: "" },
+            { year: 2019, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2019/12/10/680c34c3a8c4955c235892c9/booklet-survei-angkatan-kerja-nasional-agustus-2019.html", title: "Booklet", lang: "ID", note: "" },
+            { year: 2020, period: "Februari", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2020/08/28/2aaf3f1339f9295704cb198f/booklet-survei-angkatan-kerja-nasional-februari-2020.html", title: "Booklet", lang: "ID", note: "" },
+            { year: 2020, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2020/12/23/d8b9a75ce826ddafbddb9657/booklet-survei-angkatan-kerja-nasional-agustus-2020.html", title: "Booklet", lang: "ID", note: "" },
+            { year: 2021, period: "Februari", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2021/08/09/790fa89d429d86821c12f57b/booklet-survei-angkatan-kerja-nasional-februari-2021.html", title: "Booklet", lang: "ID", note: "" },
+            { year: 2021, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2021/12/22/52d405e2dc5dc6f2ba57bf83/booklet-survei-angkatan-kerja-nasional-agustus-2021.html", title: "Booklet", lang: "ID", note: "" },
+            { year: 2022, period: "Februari", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2023/07/07/40a0b3f1fd46be1a5edbae1d/booklet-survei-angkatan-kerja-nasional-februari-2023.html", title: "Booklet", lang: "ID", note: "" },
+            { year: 2022, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2023/12/22/ffb3e2d42b94d727d97e78d8/booklet-survei-angkatan-kerja-nasional-agustus-2023.html", title: "Booklet", lang: "ID", note: "" },
+            { year: 2023, period: "Februari", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2023/07/07/40a0b3f1fd46be1a5edbae1d/booklet-survei-angkatan-kerja-nasional-februari-2023.html", title: "Booklet", lang: "ID", note: "" },
+            { year: 2023, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2023/12/22/ffb3e2d42b94d727d97e78d8/booklet-survei-angkatan-kerja-nasional-agustus-2023.html", title: "Booklet", lang: "ID", note: "" },
+            { year: 2024, period: "Februari", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2024/07/05/0455778ea851bbeda66890a8/booklet-sakernas-februari-2024.html", title: "Booklet", lang: "ID", note: "" },
+            { year: 2024, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2024/12/20/145b7ca9b2e159c6c0493290/booklet-sakernas-agustus-2024.html", title: "Booklet", lang: "ID", note: "" },
+            { year: 2025, period: "Februari", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2025/07/14/90a6b20c25c63176d23ab46c/booklet-sakernas-februari-2025.html", title: "Booklet", lang: "ID", note: "" },
+            { year: 2025, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2026/01/12/7cafd1df082c81784e0e15f8/booklet-sakernas-agustus-2025.html", title: "Booklet", lang: "ID", note: "" },
+            { year: 2021, period: "Desember", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2021/12/22/42c332115ba2a6fb0f36590c/booklet-keselamatan-dan-kesehatan-pekerja-di-masa-pandemi-covid-19.html", title: "Booklet COVID-19", lang: "ID", note: "Booklet Keselamatan dan Kesehatan Pekerja di Masa Pandemi COVID-19" },
+            { year: 2023, period: "Januari", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2023/01/24/26f9953aa34944a5ad539815/booklet-pekerja-anak-di-indonesia-2022-sebelum-dan-semasa-pandemi-covid-19-.html", title: "Booklet Pekerja Anak ", lang: "ID", note: "Booklet Pekerja Anak di Indonesia 2022 Sebelum dan Semasa Pandemi COVID-19." },
+            { year: 2002, period: "-", category: "Klasifikasi", link: "https://drive.google.com/file/d/1_ixIMcXGP79Q3v-cvVTYnTKkAtSIRvC5/preview", title: "Buku KBJI 2002", lang: "ID", note: "" },
+            { year: 2014, period: "-", category: "Klasifikasi", link: "https://drive.google.com/file/d/1U0tuLEMSGHPRBDTlkRkdw1YQhWpJepVC/preview", title: "Buku KBJI 2014", lang: "ID", note: "" },
+            { year: 2000, period: "-", category: "Klasifikasi", link: "https://drive.google.com/file/d/1EqX7OBRDgVfKbJ5zUv3nVrvLhTGZ1Pj_/preview", title: "Buku KBLI 2000", lang: "ID", note: "" },
+            { year: 2005, period: "-", category: "Klasifikasi", link: "https://drive.google.com/file/d/19k963QjQDUYam1vS4S4dWzk7YSFTaCfR/preview", title: "Buku KBLI 2005", lang: "ID", note: "" },
+            { year: 2009, period: "-", category: "Klasifikasi", link: "https://drive.google.com/file/d/1CbtN6AlPZiVCkvZuLWP4rALkAVPm7IY9/preview", title: "Buku KBLI 2009", lang: "ID", note: "" },
+            { year: 2015, period: "-", category: "Klasifikasi", link: "https://drive.google.com/file/d/174k2LqODmNDh46ScuTBypFv0YViLg_E7/preview", title: "Buku KBLI 2015", lang: "ID", note: "" },
+            { year: 2020, period: "-", category: "Klasifikasi", link: "https://drive.google.com/file/d/1Z1Uub1sqsAKts2RrAVA8WtSbb-kf_lEm/preview", title: "Buku KBLI 2020", lang: "ID", note: "" },
+            { year: 2020, period: "Agustus", category: "Publikasi", link: "https://drive.google.com/file/d/1ZCvS9M8colbXwuUj6S1jarRFsaA1i6eW/preview", title: "Gender", lang: "ID", note: "" },
+            { year: 2025, period: "Februari", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2025/06/20/fec826c9a88adaa045a6ac9f/keadaan-angkatan-kerja-di-indonesia-februari-2025.html", title: "Keadaan Angkatan Kerja", lang: "ID", note: "" },
+            { year: 2025, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2025/12/19/42a75ee61332755586fdfcdd/keadaan-angkatan-kerja-di-indonesia-agustus-2025.html", title: "Keadaan Angkatan Kerja", lang: "ID", note: "" },
+            { year: 2022, period: "Februari", category: "Publikasi", link: "https://drive.google.com/file/d/13hcHDnEuopItYYxiqEjqogpgYIW6CvGv/preview", title: "Keadaan Angkatan Kerja", lang: "ID", note: "" },
+            { year: 2021, period: "Agustus", category: "Publikasi", link: "https://drive.google.com/file/d/1-3injWJFD9ucuv8q5-iPkEHw7V__cSEc/preview", title: "Keadaan Angkatan Kerja", lang: "ID", note: "" },
+            { year: 2021, period: "Februari", category: "Publikasi", link: "https://drive.google.com/file/d/1sjE3so5e1EvbWSsQOZ9fZmqI_2KT1aqN/preview", title: "Keadaan Angkatan Kerja", lang: "ID", note: "" },
+            { year: 2020, period: "Agustus", category: "Publikasi", link: "https://drive.google.com/file/d/11cCpEYqzIg7Qu4d4R9pQ645-bBWK0bMq/preview", title: "Keadaan Angkatan Kerja", lang: "ID", note: "" },
+            { year: 2020, period: "Februari", category: "Publikasi", link: "https://drive.google.com/file/d/1KPrWONpufbxZlr3dYpVB2_EWOsDoObtT/preview", title: "Keadaan Angkatan Kerja", lang: "ID", note: "" },
+            { year: 2019, period: "Februari", category: "Publikasi", link: "https://drive.google.com/file/d/19YV3eVcu35igU7tF1_-iF-KNSlHXTHrl/preview", title: "Keadaan Angkatan Kerja", lang: "ID", note: "" },
+            { year: 2019, period: "Agustus", category: "Publikasi", link: "https://drive.google.com/file/d/1CvyRsPKMCXRBoCyAbf4Mc7TiRtCrg8o_/preview", title: "Keadaan Angkatan Kerja", lang: "ID", note: "" },
+            { year: 2018, period: "Februari", category: "Publikasi", link: "https://drive.google.com/file/d/19Dnd-jAzpWDJJ7k6JIelZ00S_iZnrU9j/preview", title: "Keadaan Angkatan Kerja", lang: "ID", note: "" },
+            { year: 2018, period: "Agustus", category: "Publikasi", link: "https://drive.google.com/file/d/1cQxXGyH_HB288-G0oATf_AIWkfUJnzPU/preview", title: "Keadaan Angkatan Kerja", lang: "ID", note: "" },
+            { year: 2022, period: "Februari", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2022/06/14/0ab4432ce141b3d9fac13d92/indikator-pasar-tenaga-kerja-indonesia-februari-2022.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2025, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2025/12/30/cd78a8ff95fcf228a712e8ac/indikator-pasar-tenaga-kerja-indonesia-agustus-2025.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2025, period: "Februari", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2025/06/30/7cc0d8a5ea09515a0b2a2729/indikator-pasar-tenaga-kerja-indonesia-februari-2025.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2024, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2024/12/16/d96c70fc6be192f04edf7fe0/indikator-pasar-tenaga-kerja-indonesia-agustus-2024.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2024, period: "Februari", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2024/06/14/574e2f9c7d3397fbd1754234/indikator-pasar-tenaga-kerja-indonesia-februari-2024.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2023, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2023/12/15/e071c14121358490e96f95cd/indikator-pasar-tenaga-kerja-indonesia-agustus-2023.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2023, period: "Februari", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2023/06/16/ddcaf3b4a35c8be03f8c7ac5/indikator-pasar-tenaga-kerja-indonesia-februari-2023.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2022, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2022/12/14/590d81be67bee04024183a0e/indikator-pasar-tenaga-kerja-indonesia-agustus-2022.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2021, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2021/12/14/4b80d6ec93429e2d269cbed7/indikator-pasar-tenaga-kerja-indonesia-agustus-2021.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2021, period: "Februari", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2021/06/15/efb1f5cba486f2ebb0bab891/indikator-pasar-tenaga-kerja-indonesia-februari-2021.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2020, period: "Februari", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2020/06/26/7b90d91146f0fd8dee4369df/indikator-pasar-tenaga-kerja-indonesia-februari-2020.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2020, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2020/12/07/3f3f21ffa24ef6adc7ef2ee8/indikator-pasar-tenaga-kerja-indonesia-agustus-2020.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2019, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2019/12/06/25fbc42cac7c24ec0a5e9309/indikator-pasar-tenaga-kerja-indonesia-agustus-2019.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2019, period: "Februari", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2019/06/14/2647df94a2a708b1976d4383/indikator-pasar-tenaga-kerja-indonesia-februari-2019.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2018, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2018/11/30/dbb669d2cf4fad344ffc2577/indikator-pasar-tenaga-kerja-indonesia-agustus-2018.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2018, period: "Februari", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2018/06/04/f99a09ca269ceb058826ab3e/indikator-pasar-tenaga-kerja-indonesia-februari-2018.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2017, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2017/11/30/c49d259986000f2af721403d/indikator-pasar-tenaga-kerja-indonesia-agustus-2017.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2017, period: "Februari", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2017/08/03/60626049b6ad3a897e96b8c0/indikator-pasar-tenaga-kerja-indonesia-februari-2017.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2016, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2016/11/30/debfeeb025724bdcb640a11f/indikator-pasar-tenaga-kerja-indonesia-agustus-2016.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2016, period: "Februari", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2016/06/01/a1fac2712da9558efdce9732/indikator-pasar-tenaga-kerja-indonesia-februari-2016.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2015, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2015/11/30/cfe5ceda105e93adcc20d0d9/indikator-pasar-tenaga-kerja-indonesia-agustus-2015.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2015, period: "Februari", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2015/06/01/8ee95dd5fef0071d28c80f53/indikator-pasar-tenaga-kerja-indonesia-februari-2015.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2014, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2014/12/08/40e98aa4c71fc10a6ed89324/indikator-pasar-tenaga-kerja-indonesia-agustus-2014.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2014, period: "November", category: "Publikasi", link: "KILM", title: "KILM", lang: "ID", note: "tidak ada Sakernas November di 2014" },
+            { year: 2014, period: "Mei", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2014/09/08/ee4de7bb7c4536b3d0cb6622/indikator-pasar-tenaga-kerja-indonesia-mei-2014.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2014, period: "Februari", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2014/05/30/a31a9979047462fe074565a0/indikator-pasar-tenaga-kerja-indonesia-februari-2014.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2013, period: "November", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2014/02/25/ddf29617356589286be4fa28/indikator-pasar-tenaga-kerja-indonesia-november-2013.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2013, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2013/12/03/600583fab9387bbbb49e2a49/indikator-pasar-tenaga-kerja-indonesia-agustus-2013.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2013, period: "Mei", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2013/08/30/b0595a5f650aaf7770b04d85/indikator-pasar-tenaga-kerja-indonesia-mei-2013.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2013, period: "Februari", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2013/05/31/2f017b72135b32f45e513e4c/indikator-pasar-tenaga-kerja-indonesia-februari-2013.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2012, period: "November", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2013/02/28/0ae1550d384d196f20507cf2/indikator-pasar-tenaga-kerja-indonesia-november-2012.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2012, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2012/11/30/92622e8053bca31af915c309/indikator-pasar-tenaga-kerja-indonesia-agustus-2012.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2012, period: "Mei", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2012/09/05/f303188c7b2f3bb237f1f77f/indikator-pasar-tenaga-kerja-indonesia-mei-2012.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2012, period: "Februari", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2012/06/04/ce7ca2c4e8ac6b59c3dc1f37/indikator-pasar-tenaga-kerja-indonesia-februari-2012.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2011, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2011/11/28/015e5c528cd28e48eb6746de/indikator-pasar-tenaga-kerja-indonesia-agustus-2011.html", title: "KILM", lang: "ID", note: "" },
+            { year: 2011, period: "Februari", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2011/07/29/0ebbab182191c0a81920d19e/indikator-pasar-tenaga-kerja-indonesia-februari-2011.html", title: "KILM", lang: "ID", note: "pertama kali diterbitkan" },
+            { year: 2002, period: "-", category: "Klasifikasi", link: "https://drive.google.com/file/d/1z9SNTH6qdMqdFmxaGrH4T9BDBXql-VoE/preview", title: "Kode KBJI 2002", lang: "ID", note: "" },
+            { year: 2000, period: "-", category: "Klasifikasi", link: "https://drive.google.com/file/d/1hr_wueqTWoN-3n2b5kyu9RAPSDHyXIDh/preview", title: "Kode KBLI 2000", lang: "ID", note: "" },
+            { year: 2005, period: "-", category: "Klasifikasi", link: "https://drive.google.com/file/d/1nfgELonhGXOygDPWe_EJ7ULuxoK3yD4B/preview", title: "Kode KBLI 2005", lang: "ID", note: "" },
+            { year: 2009, period: "-", category: "Klasifikasi", link: "https://drive.google.com/file/d/1zXYx9jqOweicyDWi3fC0YTJ75vNkjZM0/preview", title: "Kode KBLI 2009", lang: "ID", note: "" },
+            { year: 1982, period: "-", category: "Klasifikasi", link: "https://drive.google.com/file/d/1hr_wueqTWoN-3n2b5kyu9RAPSDHyXIDh/preview", title: "Kode KJI 1982", lang: "ID", note: "" },
+            { year: 1986, period: "-", category: "Klasifikasi", link: "https://drive.google.com/file/d/147QvWKzSV-LlUD-aCWa9TYqAfm6boYzrCoJ8y0y4xZY/preview", title: "Kode Sektor 1986-1994", lang: "ID", note: "berlaku di 1986-1994" },
+            { year: 1987, period: "-", category: "Klasifikasi", link: "https://drive.google.com/file/d/147QvWKzSV-LlUD-aCWa9TYqAfm6boYzrCoJ8y0y4xZY/preview", title: "Kode Sektor 1986-1994", lang: "ID", note: "berlaku di 1986-1994" },
+            { year: 1988, period: "-", category: "Klasifikasi", link: "https://drive.google.com/file/d/147QvWKzSV-LlUD-aCWa9TYqAfm6boYzrCoJ8y0y4xZY/preview", title: "Kode Sektor 1986-1994", lang: "ID", note: "berlaku di 1986-1994" },
+            { year: 1989, period: "-", category: "Klasifikasi", link: "https://drive.google.com/file/d/147QvWKzSV-LlUD-aCWa9TYqAfm6boYzrCoJ8y0y4xZY/preview", title: "Kode Sektor 1986-1994", lang: "ID", note: "berlaku di 1986-1994" },
+            { year: 1990, period: "-", category: "Klasifikasi", link: "https://drive.google.com/file/d/147QvWKzSV-LlUD-aCWa9TYqAfm6boYzrCoJ8y0y4xZY/preview", title: "Kode Sektor 1986-1994", lang: "ID", note: "berlaku di 1986-1994" },
+            { year: 1991, period: "-", category: "Klasifikasi", link: "https://drive.google.com/file/d/147QvWKzSV-LlUD-aCWa9TYqAfm6boYzrCoJ8y0y4xZY/preview", title: "Kode Sektor 1986-1994", lang: "ID", note: "berlaku di 1986-1994" },
+            { year: 1992, period: "-", category: "Klasifikasi", link: "https://drive.google.com/file/d/147QvWKzSV-LlUD-aCWa9TYqAfm6boYzrCoJ8y0y4xZY/preview", title: "Kode Sektor 1986-1994", lang: "ID", note: "berlaku di 1986-1994" },
+            { year: 1993, period: "-", category: "Klasifikasi", link: "https://drive.google.com/file/d/147QvWKzSV-LlUD-aCWa9TYqAfm6boYzrCoJ8y0y4xZY/preview", title: "Kode Sektor 1986-1994", lang: "ID", note: "berlaku di 1986-1994" },
+            { year: 1994, period: "-", category: "Klasifikasi", link: "https://drive.google.com/file/d/147QvWKzSV-LlUD-aCWa9TYqAfm6boYzrCoJ8y0y4xZY/preview", title: "Kode Sektor 1986-1994", lang: "ID", note: "berlaku di 1986-1994" },
+            { year: 1996, period: "-", category: "Klasifikasi", link: "https://drive.google.com/file/d/1ev5rW7nMKO1Thj7xqHLX8NRyQcZYXx1i/preview", title: "Kode Sektor 1996-1999", lang: "ID", note: "" },
+            { year: 1997, period: "-", category: "Klasifikasi", link: "https://drive.google.com/file/d/1O-ENWaqqijPBI4aVnn5_Id521N9G6cw4/preview", title: "Kode Sektor 1997", lang: "ID", note: "" },
+            { year: 2022, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/1ZZa8286OMRAgnKr85mHwjSKtqMWBUtUC/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2022, period: "Februari", category: "Kuesioner", link: "https://drive.google.com/file/d/1BuHprM2NxEYFnhdhuD8eWHJ7UMP6J820/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2023, period: "Februari", category: "Kuesioner", link: "https://drive.google.com/file/d/1Zkqhm9rm1Xyn4PuknYnhWBLHt_8N4OeO/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2023, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/1eEeglx_SBJxg3_zs7nyJo9iGrjNcWjoU/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2024, period: "Februari", category: "Kuesioner", link: "https://drive.google.com/file/d/1fVI32P5as6jmszrkKEjHmadu9LGXG1NU/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2024, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/1n7XXbGnTDGCmah0NM0k7ILIzEy1joXM9/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2025, period: "Februari", category: "Kuesioner", link: "https://drive.google.com/file/d/1SxeXN8bG-9EBwW-CklnoEcUyZPHfbUZB/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2025, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/144Jn0sTv4OKUv2j9Oh51fY1W4s_bOMUN/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2025, period: "November", category: "Kuesioner", link: "https://drive.google.com/file/d/1NE0BzLG9mF_xHzhplyfYeWvuzlFNN-SR/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2021, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/1ajPf3dy3EOgmpoRxdjy0iLsGFEzg96N7/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2021, period: "Februari", category: "Kuesioner", link: "https://drive.google.com/file/d/1v3CcJDlwePL-b5WuZur4q3hkuUALxZlb/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2020, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/1uopRLxDlg161u4cvaiX8SmDryY8J-ELv/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2020, period: "Februari", category: "Kuesioner", link: "https://drive.google.com/file/d/12YtOpVRgoAw7Ca99IXL0dhcB_NDeZH5r/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2019, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/1plo1IRT6WeG3Hs8l-aBjasvFdlSQj4_4/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2019, period: "Februari", category: "Kuesioner", link: "https://drive.google.com/file/d/1z01GGgbYZxodheoWxb_LSyRXuzuNC-fk/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2018, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/11jo21tnO3dto2jxKCezsWCgJKtFsWJyB/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2018, period: "Februari", category: "Kuesioner", link: "https://drive.google.com/file/d/1ePwRxz19DOlwuXJwncJOcDv5Xc-PwvSl/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2017, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/1yez4L864XGNvfDueFqnRTDT7GIv1Hv9K/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2017, period: "Februari", category: "Kuesioner", link: "https://drive.google.com/file/d/17Flq9cunsaIvRqvVG4m7kR9e3LadVD42/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2016, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/1VO1ez6shkuPUwtm907Yp4gSANes-vcFC/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2016, period: "Februari", category: "Kuesioner", link: "https://drive.google.com/file/d/1uR0cw3imxmbs-PF9UH1sZz0lNXQiN6YU/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2015, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/1swM3rAmfD3XLOvSyR-I4gZP2yhRgPA6K/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2015, period: "Februari", category: "Kuesioner", link: "https://drive.google.com/file/d/1hktoyHoeTQwnK6OmpePnieelQ7emWu40/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2014, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/10PP5preJgx0yZwVxxanLpa9lbO408G5y/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2014, period: "Februari", category: "Kuesioner", link: "https://drive.google.com/file/d/1oVQQDrRSYtt6vFBZF0vDULAAQpBI5Pbi/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2014, period: "Mei", category: "Kuesioner", link: "https://drive.google.com/file/d/1N65Qrdv5ewob1SDlo--zI-jJ8WMTMiuD/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2013, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/109r_2wmO6SVWFyK7Dzm2RihmqJ-o0HdN/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2013, period: "Februari", category: "Kuesioner", link: "https://drive.google.com/file/d/1OfIpaunafoSZ7DjKuotzLr0aDq3T0F7F/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2013, period: "Mei", category: "Kuesioner", link: "https://drive.google.com/file/d/1TVa7Hy_9soVaON57m_iSzBRf7IvsBF9I/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2013, period: "November", category: "Kuesioner", link: "https://drive.google.com/file/d/1xWJsC3ZSI2zUHPT6RVxqD-vGmGjBTTWS/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2012, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/1rdDDNGkQF04DCGVpmgjL5EiUcGJAlNTz/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2011, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/1m6BD1oL8IQTY4URW8UDNoQe4lZqentfQ/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2010, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/1B5HyiQJNCmJpRVl7OxLfIgknUy9bpuRg/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2009, period: "Februari", category: "Kuesioner", link: "https://drive.google.com/file/d/164RCkEaxHKSFaLUHfPiNThfLgd_qft_b/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2008, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/1rOR5Iz1DGNSxBsXjJur1Vk_fqF0dO0T9/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2007, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/1XcAvg4RtjRNxZWxW9VMy6vqjIBNlhqjr/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2006, period: "Februari", category: "Kuesioner", link: "https://drive.google.com/file/d/1hRC9gna3RHbHBhbC0-6VDbb2ULmeitNX/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2006, period: "November", category: "Kuesioner", link: "https://drive.google.com/file/d/1lQXq9n9s4KuC12ozFIxlwPNLJ9g0uv2I/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2005, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/1tQ3Kwsfz-MkmqnrrWS0vFmurwrgRGLA3/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2005, period: "Februari", category: "Kuesioner", link: "https://drive.google.com/file/d/1UcLbc8khF9rTzsnMmz2eEj9ux0Hp8Az-/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2004, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/1bemkW8Ce5mIfxpCZtymvUXcTMQiW-VjF/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2003, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/1WBJmzpneIwA0tv_A5zVKfVI7S2KonIJ4/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2002, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/1WcESB4bGA4hyElmzCx6oHuT_AMBNY-qu/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2001, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/1R97gpVGxqaAWaqqZMUrQoKrYJvVJaW1m/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 2000, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/19hN-0y6YUcZPM-UPa37ySgYsvW2mXYeU/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 1999, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/1WPLYk8U85zQJVhWMAz7OWDZLQXwC5S5w/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 1998, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/1DDtADqhAY8Jcb2PWWY8lKUW14KqSxfiw/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 1997, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/19RFSQglY5QQ1OZVRubyWwV3UF4L8jmcq/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 1996, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/1NLN6CXuxxrFib1GZc7revEg17TOTsYEk/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 1993, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/10p9l6O1dyXUORjLvijSvmmLnRPfgc9SU/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 1990, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/1Ne7MluH3d_clSGKf0ctHKmGI6U1vFbYH/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 1989, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/153Nvz10ieMa1a0zrPddmPIFhAwYLtO1C/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 1987, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/1iJ-yQXoX2QJ_KySzeyepU8d5vwYW6kOr/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 1986, period: "Agustus", category: "Kuesioner", link: "https://drive.google.com/file/d/1BUM5J9BgdSSMHKKBsOX038qoPayqQiCy/preview", title: "Kuesioner", lang: "ID", note: "" },
+            { year: 1994, period: "July", category: "Kuesioner", link: "https://drive.google.com/file/d/10mVEQGNw27oJKSQwYnIqI0OSa6V2rbUV/preview", title: "Kuesioner July V1 (ID)", lang: "ID", note: "" },
+            { year: 1994, period: "July", category: "Kuesioner", link: "https://drive.google.com/file/d/1TKu_rP2K0LgvUY8CgGMA2Do5V3ZOqh79/preview", title: "Kuesioner July V2 (ID)", lang: "ID", note: "" },
+            { year: 2019, period: "Agustus", category: "Publikasi", link: "https://drive.google.com/file/d/1_ubmy4Z7tN2C5hiyPpLW5ZFw3sIyClCG/preview", title: "Lanjut Usia", lang: "ID", note: "" },
+            { year: 2021, period: "Agustus", category: "Publikasi", link: "https://drive.google.com/file/d/1ID57yw4HLHaYVxt-638VkgxqYRgSW4kU/preview", title: "Lanjut Usia", lang: "ID", note: "" },
+            { year: 2020, period: "Agustus", category: "Publikasi", link: "https://drive.google.com/file/d/1Rw1b85BBbmFUIOUP66j9swR7P_RW9icj/preview", title: "Lanjut Usia", lang: "ID", note: "" },
+            { year: 2018, period: "Agustus", category: "Publikasi", link: "https://drive.google.com/file/d/1YlS8S1ODsUmDqBYudFbJvwZyrWj1TgJx/preview", title: "Lanjut Usia", lang: "ID", note: "" },
+            { year: 2022, period: "Agustus", category: "Pedoman", link: "https://drive.google.com/file/d/10r13KjcclH-NVuLvCtmbajZXCvludr4g/preview", title: "Pedoman Pencacahan", lang: "ID", note: "" },
+            { year: 2022, period: "Februari", category: "Pedoman", link: "https://drive.google.com/file/d/1HRWs4bwJSuJLxSp4DFmhPu9DKf3cMyLn/preview", title: "Pedoman Pencacahan", lang: "ID", note: "" },
+            { year: 2021, period: "Agustus", category: "Pedoman", link: "https://drive.google.com/file/d/1PUk0wtNfSrWHZVc8KJZBCJUssyxqHW0C/preview", title: "Pedoman Pencacahan", lang: "ID", note: "" },
+            { year: 2021, period: "Februari", category: "Pedoman", link: "https://drive.google.com/file/d/1NIKkvrau3Ga5iozmgakK73tuUg6azkpq/preview", title: "Pedoman Pencacahan", lang: "ID", note: "" },
+            { year: 2020, period: "Agustus", category: "Pedoman", link: "https://drive.google.com/file/d/16eZcL79oliUpVsZnUUJywO5kRaoN7wvU/preview", title: "Pedoman Pencacahan", lang: "ID", note: "" },
+            { year: 2020, period: "Februari", category: "Pedoman", link: "https://drive.google.com/file/d/1l5lY-Zh7QB2EB9NQ0VV_Soc9Kgp_JJEV/preview", title: "Pedoman Pencacahan", lang: "ID", note: "" },
+            { year: 2019, period: "Agustus", category: "Pedoman", link: "https://drive.google.com/file/d/1B2ZOAzVTn-vEt_35w2rzXqbWClntMgsJ/preview", title: "Pedoman Pencacahan", lang: "ID", note: "" },
+            { year: 2019, period: "Februari", category: "Pedoman", link: "https://drive.google.com/file/d/1zEY-iLYNZ9qUnk5_WZ2wxI_wRWN_yc4G/preview", title: "Pedoman Pencacahan", lang: "ID", note: "" },
+            { year: 2018, period: "Agustus", category: "Pedoman", link: "https://drive.google.com/file/d/1gXmbSfbWdxtV0z9Ntg7zJgmlHcS5lZ0M/preview", title: "Pedoman Pencacahan", lang: "ID", note: "" },
+            { year: 2022, period: "Agustus", category: "Pedoman", link: "https://drive.google.com/file/d/1LvW18nGErcNfKFLynDh3OnqF61dpe3eJ/preview", title: "Pedoman Pengawasan", lang: "ID", note: "" },
+            { year: 2022, period: "Februari", category: "Pedoman", link: "https://drive.google.com/file/d/1zKgKU_3SGBhzXi32qltyIww9-KL542-4/preview", title: "Pedoman Pengawasan", lang: "ID", note: "" },
+            { year: 2021, period: "Agustus", category: "Pedoman", link: "https://drive.google.com/file/d/1-X8D8Dq72z5LJPZ5mg2JWZAPSwSj1SBh/preview", title: "Pedoman Pengawasan", lang: "ID", note: "" },
+            { year: 2021, period: "Februari", category: "Pedoman", link: "https://drive.google.com/file/d/1foxww7NPhPKzJIoS1rQe-7Qb-V-25Anr/preview", title: "Pedoman Pengawasan", lang: "ID", note: "" },
+            { year: 2020, period: "Agustus", category: "Pedoman", link: "https://drive.google.com/file/d/1VLj2GG6D3o_c_8Ddlrw1jbEKLM3vw8SG/preview", title: "Pedoman Pengawasan", lang: "ID", note: "" },
+            { year: 2020, period: "Februari", category: "Pedoman", link: "https://drive.google.com/file/d/1oz6pdfzFyFJKPb1KhAo7YXKzdpXLiTDh/preview", title: "Pedoman Pengawasan", lang: "ID", note: "" },
+            { year: 2019, period: "Agustus", category: "Pedoman", link: "https://drive.google.com/file/d/1akWBtwF2CX9BoQoxjuGu_B_jAOz9RwiA/preview", title: "Pedoman Pengawasan", lang: "ID", note: "" },
+            { year: 2019, period: "Februari", category: "Pedoman", link: "https://drive.google.com/file/d/1n1OUDgIyWWShxPOVWynG5lVx0cQgsoi8/preview", title: "Pedoman Pengawasan", lang: "ID", note: "" },
+            { year: 2018, period: "Agustus", category: "Pedoman", link: "https://drive.google.com/file/d/17VWA_jN7iMEE5olI1_kwsnDueP6gyNcB/preview", title: "Pedoman Pengawasan", lang: "ID", note: "" },
+            { year: 2024, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2025/04/28/1ecc9dec1ef7a591babf5962/indikator-pekerjaan-layak-di-indonesia-2024.html", title: "Pekerjaan Layak", lang: "ID", note: "" },
+            { year: 2023, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2024/04/30/8fe6c4f34d5f1b9953903873/indikator-pekerjaan-layak-di-indonesia-2023.html", title: "Pekerjaan Layak", lang: "ID", note: "" },
+            { year: 2022, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2023/04/17/65695a2b5a039c58071d23b6/indikator-pekerjaan-layak-di-indonesia-2022.html", title: "Pekerjaan Layak", lang: "ID", note: "" },
+            { year: 2021, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2022/04/08/1ea92e310421c90fcc82a84e/indikator-pekerjaan-layak-di-indonesia-2021.html", title: "Pekerjaan Layak", lang: "ID", note: "" },
+            { year: 2020, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2021/07/06/a150047cc0de89dd9fafa881/indikator-pekerjaan-layak-di-indonesia-2020.html", title: "Pekerjaan Layak", lang: "ID", note: "" },
+            { year: 2019, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2020/06/19/893d294190427e5eace18cd6/indikator-pekerjaan-layak-di-indonesia-2019.html", title: "Pekerjaan Layak", lang: "ID", note: "" },
+            { year: 2018, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2019/07/19/49ca683c8f1917851b094468/indikator-pekerjaan-layak-di-indonesia-2018.html", title: "Pekerjaan Layak", lang: "ID", note: "" },
+            { year: 2017, period: "Agustus", category: "Publikasi", link: "https://www.bps.go.id/id/publication/2018/09/28/5a2eae80bd3bb6b57d9eb726/indikator-pekerjaan-layak-di-indonesia-2017.html", title: "Pekerjaan Layak", lang: "ID", note: "pertama kali diterbitkan" },
+            { year: 2020, period: "Agustus", category: "Publikasi", link: "https://drive.google.com/file/d/1fQwHbYJwg9VJNqQ_nVKcLeWlwYg5cQC3/preview", title: "Pemuda", lang: "ID", note: "" },
+            { year: 2021, period: "Agustus", category: "Publikasi", link: "https://drive.google.com/file/d/1OYDikKYHnouiId9n2jibZJNUDxe6V394/preview", title: "Pemuda", lang: "ID", note: "" },
+            { year: 2018, period: "Agustus", category: "Publikasi", link: "https://drive.google.com/file/d/1uCkvmC3d26GBFPCXaRL40v0L6nGiIe5b/preview", title: "Pemuda", lang: "ID", note: "" },
+            { year: 2019, period: "Agustus", category: "Publikasi", link: "https://drive.google.com/file/d/1ZKWroRa3NMjjmwE9Qe1nD1_GwnbMm_rG/preview", title: "Pemuda", lang: "ID", note: "" },
+            { year: 2020, period: "Februari", category: "Publikasi", link: "https://drive.google.com/file/d/1cI2F71xkotuhJUcyC0TTHX5gbksrlYWO/preview", title: "Profil Pekerja", lang: "ID", note: "" },
+            { year: 2021, period: "Februari", category: "Publikasi", link: "https://drive.google.com/file/d/1Fbg4cEnn8uKWhqD9dNY28hgZPuAaEQCb/preview", title: "Profil Pekerja", lang: "ID", note: "" },
+            { year: 2022, period: "Februari", category: "Publikasi", link: "https://drive.google.com/file/d/1GhxRbQYzQtTulfKegTKmP6lWj5t8ArDR/preview", title: "Profil Pekerja", lang: "ID", note: "" },
+            { year: 2020, period: "Agustus", category: "Publikasi", link: "https://drive.google.com/file/d/1JQK1LApo8AleqbMk4RJNtMTnQTTI0EaB/preview", title: "Profil Pekerja", lang: "ID", note: "" },
+            { year: 2018, period: "Agustus", category: "Publikasi", link: "https://drive.google.com/file/d/1LKAq6t9apWxNJh6yZNNBl_a3CeoG6_XG/preview", title: "Profil Pekerja", lang: "ID", note: "" },
+            { year: 2018, period: "Februari", category: "Publikasi", link: "https://drive.google.com/file/d/1vJCM4Q3BlNgLQmMOypB8yDy5Rw6Tvmv3/preview", title: "Profil Pekerja", lang: "ID", note: "" },
+            { year: 2019, period: "Agustus", category: "Publikasi", link: "https://drive.google.com/file/d/1WpedTYRRsP5Bun904BAa2Z4AiQtRDb1x/preview", title: "Profil Pekerja", lang: "ID", note: "" },
+            { year: 2019, period: "Februari", category: "Publikasi", link: "https://drive.google.com/file/d/1YvFIU1as5LRB2dq_vFLB2AP9T3Hy8Tdg/preview", title: "Profil Pekerja", lang: "ID", note: "" },
+            { year: 2021, period: "Agustus", category: "Publikasi", link: "https://drive.google.com/file/d/1ZAzXn9fHJKolL8ElWM95CSefa6s6pVRK/preview", title: "Profil Pekerja", lang: "ID", note: "" },
+            { year: 2022, period: "Februari", category: "Publikasi", link: "https://drive.google.com/file/d/1-UmGl183pj5RGoirJBJ7ZY_2dfDLQUew/preview", title: "Profil Pendapatan", lang: "ID", note: "" },
+            { year: 2019, period: "Agustus", category: "Publikasi", link: "https://drive.google.com/file/d/10XNGlq9FUQSORR_BIz6jBkwY-Y-PDm2a/preview", title: "Profil Pendapatan", lang: "ID", note: "" },
+            { year: 2018, period: "Februari", category: "Publikasi", link: "https://drive.google.com/file/d/17EmDJ-c885EROgwSyVNsspe-LaeTsAGR/preview", title: "Profil Pendapatan", lang: "ID", note: "" },
+            { year: 2021, period: "Februari", category: "Publikasi", link: "https://drive.google.com/file/d/17GNNvjjQiqcVRqjWwwoq93IEJeioqbI5/preview", title: "Profil Pendapatan", lang: "ID", note: "" },
+            { year: 2018, period: "Agustus", category: "Publikasi", link: "https://drive.google.com/file/d/19TxmjNSF1RYG6HngGcjRgtuLFTAvd-8k/preview", title: "Profil Pendapatan", lang: "ID", note: "" },
+            { year: 2019, period: "Februari", category: "Publikasi", link: "https://drive.google.com/file/d/1g8y7_kvOSu9WElqF1Jdj0aUbLI8KMV3r/preview", title: "Profil Pendapatan", lang: "ID", note: "" },
+            { year: 2020, period: "Agustus", category: "Publikasi", link: "https://drive.google.com/file/d/1h8vu689i8FWzM-HGea7l3YBqASzrSOLE/preview", title: "Profil Pendapatan", lang: "ID", note: "" },
+            { year: 2021, period: "Agustus", category: "Publikasi", link: "https://drive.google.com/file/d/1jmsHgQ60RSdYMYk1ElAes7dZXqgIrJVm/preview", title: "Profil Pendapatan", lang: "ID", note: "" },
+            { year: 2020, period: "Februari", category: "Publikasi", link: "https://drive.google.com/file/d/1VmpUcyll4CrVFLUC6yFAlpAm6pTO6olK/preview", title: "Profil Pendapatan", lang: "ID", note: "" },
+            { year: 2021, period: "Agustus", category: "Publikasi", link: "https://drive.google.com/file/d/1YisHi7VZVCbBq66jDnONsSOp4nXQfUgE/preview", title: "Publikasi Pandemi", lang: "ID", note: "" },
+            { year: 2022, period: "February", category: "Kuesioner", link: "https://drive.google.com/file/d/1jhOStLIndDMs1UZsXBDyPo_NEL1MW6a2/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2021, period: "August", category: "Kuesioner", link: "https://drive.google.com/file/d/1AUsmVp3mbdz22OqYRzZXe_VvvW_NK1ep/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2021, period: "February", category: "Kuesioner", link: "https://drive.google.com/file/d/17ww4VfzZcKFDHB2NXvMy2ANmtQncRrlH/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2020, period: "August", category: "Kuesioner", link: "https://drive.google.com/file/d/1bA3KD1yMlzU6ZhEvznAfK90vooP02hNC/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2020, period: "February", category: "Kuesioner", link: "https://drive.google.com/file/d/1RO2oQh1RfmbZkX-6fHh6fEYF9EZaZ678/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2019, period: "August", category: "Kuesioner", link: "https://drive.google.com/file/d/1cQGTvxA1lN-JWP0ncSNRUPCblb3JSTS8/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2019, period: "February", category: "Kuesioner", link: "https://drive.google.com/file/d/1BAqy5k2E6abCVShOZq597XemIbFDPfuQ/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2018, period: "August", category: "Kuesioner", link: "https://drive.google.com/file/d/1F8A-tsO4KxkPvTVSCPAT9BaFe1-rsIO1/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2018, period: "February", category: "Kuesioner", link: "https://drive.google.com/file/d/1SlpfwVZaKWRldKO3iTCKz8W0SQZWGP4T/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2017, period: "August", category: "Kuesioner", link: "https://drive.google.com/file/d/1KlnM6dP25_Wr3G_HCUThcsiHdVXmkpBA/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2017, period: "February", category: "Kuesioner", link: "https://drive.google.com/file/d/1MYj-4sLX6mbsZn19nmV_e-nAXPbGn6xs/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2016, period: "August", category: "Kuesioner", link: "https://drive.google.com/file/d/1hXbDxandZes1AOT8j1bReORWwKDqNp-S/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2016, period: "February", category: "Kuesioner", link: "https://drive.google.com/file/d/1mIWmtoxzdsGZObg1WMZT38vprGmp2ItK/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2015, period: "August", category: "Kuesioner", link: "https://drive.google.com/file/d/1DIKRMFcEEkNSL0wLI195S7dPbvUd2vHl/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2015, period: "February", category: "Kuesioner", link: "https://drive.google.com/file/d/1fZ2JT8Juq-4DVyTiMW2TnY1xgmKcJnRE/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2014, period: "August", category: "Kuesioner", link: "https://drive.google.com/file/d/1VmVChSiOKiVpP4emjUaxqI9jTWy1JJgX/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2014, period: "February", category: "Kuesioner", link: "https://drive.google.com/file/d/171QfD3N2FGqqKTWUEsRB0tbOtlEOzw2w/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2014, period: "May", category: "Kuesioner", link: "https://drive.google.com/file/d/1EP95e7jxDmOSkmX08_CLMD-bXtdqLH1F/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2013, period: "August", category: "Kuesioner", link: "https://drive.google.com/file/d/1-hKGIBVAIIOTWC7Ew8RIBh9dLOYDrewJ/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2013, period: "May", category: "Kuesioner", link: "https://drive.google.com/file/d/1YgbJknQeWVMKKfqfFaKjz_e7yXatfalf/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2013, period: "November", category: "Kuesioner", link: "https://drive.google.com/file/d/1w2ckkVLojR3rdDv1NgAt_u90573TROJO/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2012, period: "August", category: "Kuesioner", link: "https://drive.google.com/file/d/1wRTys4wMDhWwlo3GaWz8SAgQZApI9sa6/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2011, period: "August", category: "Kuesioner", link: "https://drive.google.com/file/d/16kYSSTRh9QG6R2vAxR-N1vtST4jE2lfV/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2010, period: "August", category: "Kuesioner", link: "https://drive.google.com/file/d/186y5Ih1kFbWdvlyNQkLEFYr9haPhuw7f/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2010, period: "February", category: "Kuesioner", link: "https://drive.google.com/file/d/1fsG72kV-4h7OcSpvhZbqa7ecPsO196jx/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2009, period: "August", category: "Kuesioner", link: "https://drive.google.com/file/d/10ESkqEHQIKijw8GOztvFOArFnkXDmvDW/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2008, period: "February", category: "Kuesioner", link: "https://drive.google.com/file/d/1QTWoisrf_Ifd9M7LsywbxVkEJm-4-I3N/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2006, period: "February", category: "Kuesioner", link: "https://drive.google.com/file/d/1fVdP7N8QYhZrS-eNKyeqPHIXJ1LuS8To/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2006, period: "November", category: "Kuesioner", link: "https://drive.google.com/file/d/1D1y_U-a2cDc4azoF4CaC62T19GXyTfpx/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2005, period: "August", category: "Kuesioner", link: "https://drive.google.com/file/d/1FAeAt0AJCYadzkaABdvuyOMeInHM005S/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2005, period: "February", category: "Kuesioner", link: "https://drive.google.com/file/d/1aSdUvITzmvwHnSHspYSqR-ybHFITelyl/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2003, period: "August", category: "Kuesioner", link: "https://drive.google.com/file/d/1HPRS2c5y8SBClosF5KIkPvMQLHHrYu8x/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 2002, period: "August", category: "Kuesioner", link: "https://drive.google.com/file/d/1P4dREkJhigpwrjLnwYY7TRHWB8fv31jF/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 1998, period: "August", category: "Kuesioner", link: "https://drive.google.com/file/d/1D0_rr4GszoWcIeLaIgugahdf-JDmErgk/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 1997, period: "August", category: "Kuesioner", link: "https://drive.google.com/file/d/1MUjiqs-jrUOMCAU_L5itYWRcvrVRp0wB/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 1996, period: "August", category: "Kuesioner", link: "https://drive.google.com/file/d/1d0H7esk333PU65Aryg3eB1Pl9MYJ5lop/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 1993, period: "August", category: "Kuesioner", link: "https://drive.google.com/file/d/1IYKZCc1kAfPt9CnPHX8XCgpQ5Ejg1rA3/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 1990, period: "August", category: "Kuesioner", link: "https://drive.google.com/file/d/1ALxqpqu03Sp1gA3X-VDBLfvWzi9DYga9/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 1989, period: "August", category: "Kuesioner", link: "https://drive.google.com/file/d/1s5d3DmP-RMV9PCFmp3LT29Wv1OpDxBBJ/preview", title: "Questionnaire", lang: "EN", note: "" },
+            { year: 1987, period: "-", category: "Sejarah", link: "https://drive.google.com/file/d/1zkGqLaJDk3Z1NmV9JMQEUcQ8h7RZDRAz/preview", title: "Sakernas Volume 1", lang: "ID", note: "Developmet Studies Volume I Labor Force and Wages Bappenas BPS" },
+            { year: 1988, period: "-", category: "Sejarah", link: "https://drive.google.com/file/d/1jTZK25BGtjVtRQwffXiFPHy79t7wiKqN/preview", title: "Sakernas Volume 2", lang: "ID", note: "Developmet Studies Volume II Wage Data Bappenas BPS" },
+            { year: "-", period: "-", category: "Sejarah", link: "https://dsbb.imf.org/sdds/summary-methodology-base/country/IDN/category/EMP00", title: "Sejarah", lang: "EN", note: "metadata IMF" },
+            { year: "-", period: "-", category: "Sejarah", link: "https://www.rand.org/health/surveys/bps/sakernas.html", title: "Sejarah", lang: "EN", note: "metadata RAND" }
         ];
         
         let filteredData = [...data];
@@ -746,9 +762,10 @@
         let currentYearFilter = 'all';
         let currentMonthFilter = 'all';
         
-        // Month normalization
         function normalizeMonth(month) {
-            const monthMap = {
+            if (!month) return '-';
+            const m = month.toString().toLowerCase();
+            const map = {
                 'januari': 'januari', 'january': 'januari',
                 'februari': 'februari', 'february': 'februari',
                 'maret': 'maret', 'march': 'maret',
@@ -762,10 +779,9 @@
                 'november': 'november',
                 'desember': 'desember', 'december': 'desember'
             };
-            return monthMap[month.toLowerCase()] || month.toLowerCase();
+            return map[m] || m;
         }
         
-        // Populate year filter
         function populateYearFilter() {
             const years = [...new Set(data.map(item => item.year))].sort((a, b) => {
                 if (a === "-") return 1;
@@ -782,7 +798,6 @@
             });
         }
         
-        // Render table
         function renderTable() {
             const tbody = document.getElementById('tableBody');
             const noResults = document.getElementById('noResults');
@@ -802,9 +817,7 @@
             
             filteredData.forEach((item, index) => {
                 const row = document.createElement('tr');
-                
-                const langBadge = item.lang ? 
-                    `<span class="language-badge lang-${item.lang.toLowerCase()}">${item.lang}</span>` : '';
+                const langBadge = item.lang ? `<span class="language-badge lang-${item.lang.toLowerCase()}">${item.lang}</span>` : '';
                 
                 row.innerHTML = `
                     <td>${index + 1}</td>
@@ -821,8 +834,64 @@
             
             document.getElementById('visibleCount').textContent = filteredData.length;
         }
+
+        // Sorting Logic
+        function sortData(key) {
+            // Toggle direction if clicking the same header, otherwise default to ascending (except for year/period which default desc)
+            if (sortConfig.key === key) {
+                sortConfig.direction = sortConfig.direction === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortConfig.key = key;
+                sortConfig.direction = (key === 'year' || key === 'period') ? 'desc' : 'asc';
+            }
+
+            // Update UI Icons
+            document.querySelectorAll('th[data-sort]').forEach(th => {
+                th.classList.remove('sort-asc', 'sort-desc');
+                if (th.dataset.sort === key) {
+                    th.classList.add(sortConfig.direction === 'asc' ? 'sort-asc' : 'sort-desc');
+                }
+            });
+
+            const getVal = (item, k) => {
+                if (k === 'period') {
+                    // Normalize month name to get weight
+                    const m = normalizeMonth(item[k]);
+                    return monthWeight[m] || 0;
+                }
+                if (k === 'year') {
+                    // Handle non-numeric years like "-"
+                    return item[k] === '-' ? -9999 : parseInt(item[k]);
+                }
+                return item[k] ? item[k].toString().toLowerCase() : '';
+            };
+
+            filteredData.sort((a, b) => {
+                let valA = getVal(a, sortConfig.key);
+                let valB = getVal(b, sortConfig.key);
+
+                if (valA < valB) return sortConfig.direction === 'asc' ? -1 : 1;
+                if (valA > valB) return sortConfig.direction === 'asc' ? 1 : -1;
+
+                // Secondary Sort (always by Year Desc, then Period Desc for stability)
+                if (sortConfig.key !== 'year') {
+                    let yearA = getVal(a, 'year');
+                    let yearB = getVal(b, 'year');
+                    if (yearA !== yearB) return yearB - yearA; // Year Desc
+                }
+                
+                if (sortConfig.key !== 'period') {
+                    let periodA = getVal(a, 'period');
+                    let periodB = getVal(b, 'period');
+                    return periodB - periodA; // Month Desc
+                }
+
+                return 0;
+            });
+
+            renderTable();
+        }
         
-        // Apply filters
         function applyFilters() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             
@@ -831,7 +900,8 @@
                     item.year.toString().includes(searchTerm) ||
                     item.period.toLowerCase().includes(searchTerm) ||
                     item.category.toLowerCase().includes(searchTerm) ||
-                    item.title.toLowerCase().includes(searchTerm);
+                    item.title.toLowerCase().includes(searchTerm) ||
+                    (item.note && item.note.toLowerCase().includes(searchTerm));
                 
                 const matchesCategory = currentFilter === 'all' || item.category.toLowerCase() === currentFilter;
                 const matchesYear = currentYearFilter === 'all' || item.year.toString() === currentYearFilter;
@@ -840,15 +910,17 @@
                 const normalizedFilterMonth = normalizeMonth(currentMonthFilter);
                 const matchesMonth = currentMonthFilter === 'all' || normalizedItemMonth === normalizedFilterMonth;
                 
-                // NEW LOGIC: Filter by Language
-                // Default to 'id' if item.lang is undefined
                 const itemLang = item.lang ? item.lang.toLowerCase() : 'id'; 
                 const matchesLang = itemLang === currentLang;
 
                 return matchesSearch && matchesCategory && matchesYear && matchesMonth && matchesLang;
             });
             
-            renderTable();
+            // Re-sort after filtering based on current config
+            const currentKey = sortConfig.key; 
+            // Temporarily reset key to force re-sort logic without flipping direction
+            sortConfig.key = null; 
+            sortData(currentKey); // This handles the renderTable() call
         }
         
         // Event listeners
@@ -886,12 +958,21 @@
             
             applyFilters();
         });
+
+        // Add Click Listeners to Table Headers for Sorting
+        document.querySelectorAll('th[data-sort]').forEach(th => {
+            th.addEventListener('click', () => {
+                sortData(th.dataset.sort);
+            });
+        });
         
         // Initialize
         document.getElementById('totalCount').textContent = data.length;
         populateYearFilter();
         
-        // Trigger initial filter to match default language (ID)
+        // Trigger initial filter & sort (Default sort is set in sortConfig)
+        // We manually set initial sort state to match "Year Desc" UI
+        document.querySelector('th[data-sort="year"]').classList.add('sort-desc');
         applyFilters(); 
     </script>
 </body>
