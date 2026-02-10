@@ -87,10 +87,25 @@
 
         .header h1 { font-size: 18px; font-weight: 700; margin: 0; }
         
-        .last-update {
+        .update-info {
+            display: flex;
+            flex-wrap: wrap;
+            column-gap: 14px;
+            row-gap: 2px;
+            margin-top: 3px;
+        }
+        .update-item {
             font-size: 11px;
             color: var(--text-label);
             font-style: italic;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .update-item .update-icon {
+            font-style: normal;
+            font-size: 10px;
+            opacity: 0.75;
         }
         
         .header-controls { display: flex; gap: 8px; }
@@ -396,7 +411,18 @@
         <div class="header">
             <div class="title-group">
                 <h1 id="pageTitle">📊 Arsip Tidak Resmi</h1>
-                <span class="last-update">Terakhir diupdate: 10 Februari 2026</span>
+                <div class="update-info">
+                    <span class="update-item">
+                        <span class="update-icon">🗄️</span>
+                        <span id="dbUpdateLabel">Data diperbarui:</span>
+                        <span id="dbUpdateTime">—</span>
+                    </span>
+                    <span class="update-item">
+                        <span class="update-icon">🛠️</span>
+                        <span id="siteUpdateLabel">Situs diperbarui:</span>
+                        <span id="siteUpdateTime">—</span>
+                    </span>
+                </div>
             </div>
             <div class="header-controls">
                 <button class="toggle-btn" id="langToggle">🌐 EN</button>
@@ -490,14 +516,14 @@
             'januari': 1, 'january': 1,
             'februari': 2, 'february': 2,
             'maret': 3, 'march': 3,
-            'april': 4, 'april': 4,
+            'april': 4,
             'mei': 5, 'may': 5,
             'juni': 6, 'june': 6,
             'juli': 7, 'july': 7,
             'agustus': 8, 'august': 8,
-            'september': 9, 'september':9,
+            'september': 9,
             'oktober': 10, 'october': 10,
-            'november': 11, 'november': 11,
+            'november': 11,
             'desember': 12, 'december': 12,
             '-': 0
         };
@@ -515,6 +541,8 @@
         const translations = {
             id: {
                 pageTitle: '📊 Arsip Tidak Resmi',
+                dbUpdated: 'Data diperbarui:',
+                siteUpdated: 'Situs diperbarui:',
                 searchPlaceholder: '🔍 Cari...',
                 year: 'Tahun',
                 month: 'Bulan',
@@ -537,6 +565,8 @@
             },
             en: {
                 pageTitle: '📊 Unofficial Archive',
+                dbUpdated: 'Data updated:',
+                siteUpdated: 'Site updated:',
                 searchPlaceholder: '🔍 Search...',
                 year: 'Year',
                 month: 'Month',
@@ -669,6 +699,10 @@
             if (yearAllOption) yearAllOption.textContent = t.all;
             if (monthAllOption) monthAllOption.textContent = t.all;
             
+            // Update timestamp labels
+            document.getElementById('dbUpdateLabel').textContent  = t.dbUpdated;
+            document.getElementById('siteUpdateLabel').textContent = t.siteUpdated;
+
             // Re-render table to update button text
             renderTable();
         }
@@ -918,7 +952,42 @@
         const yearTh = document.querySelector('th[data-sort="year"]');
         if(yearTh) yearTh.classList.add('sort-desc');
         
-        applyFilters(); 
+        applyFilters();
+
+        // ── TIMESTAMP DISPLAY ──────────────────────────────────
+        // siteBuiltAt = waktu index.html ini terakhir dibuat/diedit
+        // dbBuiltAt   = dibaca dari metadata di data.js (window.SAKERNAS_META)
+        const MONTHS_ID = ['Januari','Februari','Maret','April','Mei','Juni',
+                           'Juli','Agustus','September','Oktober','November','Desember'];
+        const MONTHS_EN = ['January','February','March','April','May','June',
+                           'July','August','September','October','November','December'];
+
+        function formatTs(isoStr, lang) {
+            if (!isoStr) return '—';
+            const d = new Date(isoStr);
+            if (isNaN(d)) return isoStr;
+            const months = lang === 'en' ? MONTHS_EN : MONTHS_ID;
+            const day   = d.getDate();
+            const mon   = months[d.getMonth()];
+            const yr    = d.getFullYear();
+            const hh    = String(d.getHours()).padStart(2,'0');
+            const mm    = String(d.getMinutes()).padStart(2,'0');
+            return `${day} ${mon} ${yr}, ${hh}:${mm}`;
+        }
+
+        function renderTimestamps() {
+            const lang = currentLang;
+            const meta = window.SAKERNAS_META || {};
+            document.getElementById('dbUpdateTime').textContent   = formatTs(meta.dbBuiltAt, lang);
+            document.getElementById('siteUpdateTime').textContent = formatTs(meta.siteBuiltAt, lang);
+        }
+
+        renderTimestamps();
+
+        // Re-render saat bahasa ganti (sudah dipanggil via updateLanguage, tapi
+        // tambahan ini agar format bulan juga ikut berganti)
+        const _origUpdateLang = langToggleBtn.onclick;
+        langToggleBtn.addEventListener('click', renderTimestamps);
     </script>
 </body>
 </html>
