@@ -1,9 +1,15 @@
-/index.html
-  X-Frame-Options: SAMEORIGIN
+/*
+  X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
-  Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: geolocation=(), microphone=(), camera=()
+  Referrer-Policy: no-referrer
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), browsing-topics=()
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex
+  Content-Security-Policy: default-src 'none'; base-uri 'none'; form-action 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; frame-src https://drive.google.com; connect-src 'none'; object-src 'none'; manifest-src 'self'
 
-/data.js
+/data/*.js
   X-Content-Type-Options: nosniff
-  Cache-Control: public, max-age=3600
+  Cache-Control: public, max-age=1800
+
+/data-manifest.js
+  X-Content-Type-Options: nosniff
+  Cache-Control: no-cache, max-age=0

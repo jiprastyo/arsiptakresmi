@@ -1,999 +1,121 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- SECURITY: Content Security Policy -->
-    <meta http-equiv="Content-Security-Policy"
-          content="default-src 'self';
-                   script-src 'self' 'unsafe-inline';
-                   style-src 'self' 'unsafe-inline';
-                   img-src 'self' data:;
-                   connect-src 'none';
-                   frame-src https://drive.google.com;
+<!doctype html>
+<html lang="id" data-theme="light">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="robots"
+            content="noindex, nofollow, noarchive, nosnippet, noimageindex, max-image-preview:none, max-snippet:0, max-video-preview:0"
+        />
+        <meta
+            name="googlebot"
+            content="noindex, nofollow, noarchive, nosnippet, noimageindex"
+        />
+        <meta name="bingbot" content="noindex, nofollow, noarchive" />
+        <meta name="slurp" content="noindex, nofollow" />
+        <meta name="duckduckbot" content="noindex, nofollow" />
+        <meta name="referrer" content="no-referrer" />
+        <meta
+            http-equiv="Content-Security-Policy"
+            content="default-src 'none';
+                   base-uri 'none';
                    form-action 'none';
-                   base-uri 'self';">
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
-    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
-    <title>Arsip Tidak Resmi</title>
-    <style>
-        :root {
-            --bg-primary: #ffffff;
-            --bg-secondary: #f8f8f8;
-            --bg-hover: #f0f0f0;
-            --bg-header: #ffffff;
-            --text-primary: #333333;
-            --text-secondary: #666666;
-            --text-label: #888888;
-            --border-color: #e0e0e0;
-            --button-bg: #ffffff;
-            --button-border: #cccccc;
-            --button-hover-bg: #f5f5f5;
-            --active-bg: #333333;
-            --active-text: #ffffff;
-            --link-color: #2196f3;
-            --sort-icon-color: #999;
-        }
-        
-        /* AMOLED DARK MODE PALETTE */
-        [data-theme="dark"] {
-            --bg-primary: #000000;
-            --bg-secondary: #121212;
-            --bg-hover: #1a1a1a;
-            --bg-header: #000000;
-            --text-primary: #ffffff;
-            --text-secondary: #b0b0b0;
-            --text-label: #666666;
-            --border-color: #333333;
-            --button-bg: #121212;
-            --button-border: #444444;
-            --button-hover-bg: #222222;
-            --active-bg: #ffffff;
-            --active-text: #000000;
-            --link-color: #64b5f6;
-            --sort-icon-color: #666;
-        }
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Segoe UI', 'Arial', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            font-size: 13px;
-            transition: background 0.3s, color 0.3s;
-        }
-        
-        .container { max-width: 100%; margin: 0 auto; }
-        
-        /* HEADER */
-        .header {
-            background: var(--bg-primary);
-            padding: 15px 20px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        
-        .title-group {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
+                   script-src 'self';
+                   style-src 'self';
+                   img-src 'self' data:;
+                   frame-src https://drive.google.com;
+                   connect-src 'none';
+                   object-src 'none';
+                   manifest-src 'self';"
+        />
+        <meta name="color-scheme" content="light dark" />
+        <title>Arsip Tidak Resmi v5.9</title>
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <a class="skip-link" href="#mainGrid">Lewati ke daftar dokumen</a>
 
-        .header h1 { font-size: 18px; font-weight: 700; margin: 0; }
-        
-        .update-info {
-            display: flex;
-            flex-wrap: wrap;
-            column-gap: 14px;
-            row-gap: 2px;
-            margin-top: 3px;
-        }
-        .update-item {
-            font-size: 11px;
-            color: var(--text-label);
-            font-style: italic;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .update-item .update-icon {
-            font-style: normal;
-            font-size: 10px;
-            opacity: 0.75;
-        }
-        
-        .header-controls { display: flex; gap: 8px; }
-
-        .toggle-btn {
-            padding: 6px 12px;
-            border: 1px solid var(--button-border);
-            background: var(--button-bg);
-            color: var(--text-primary);
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-        .toggle-btn:hover { background: var(--button-hover-bg); }
-
-        /* CONTROLS SECTION */
-        .controls {
-            padding: 15px 20px;
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .search-container { width: 100%; }
-        .search-box {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid var(--button-border);
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            border-radius: 6px;
-            font-size: 14px;
-            transition: border-color 0.2s;
-        }
-        .search-box:focus { outline: none; border-color: var(--text-secondary); }
-
-        .filters-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            width: 100%;
-        }
-
-        .filter-section {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding: 12px 14px;
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-        }
-
-        .section-label {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            gap: 7px;
-        }
-        .section-label::before {
-            content: '';
-            flex-shrink: 0;
-            width: 3px;
-            height: 13px;
-            border-radius: 2px;
-            background: var(--active-bg);
-        }
-
-        /* KATEGORI BUTTONS */
-        .category-group {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            padding: 7px 18px;
-            border: 1.5px solid var(--button-border);
-            background: var(--button-bg);
-            color: var(--text-primary);
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 600;
-            white-space: nowrap;
-            transition: all 0.15s;
-        }
-        .filter-btn:hover {
-            border-color: var(--active-bg);
-            background: var(--button-hover-bg);
-            box-shadow: 0 1px 4px rgba(0,0,0,0.12);
-        }
-        .filter-btn.active {
-            background: var(--active-bg);
-            color: var(--active-text);
-            border-color: var(--active-bg);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.18);
-        }
-
-        /* PERIODE SELECTS */
-        .period-group { 
-            display: flex; 
-            gap: 10px; 
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        select {
-            padding: 7px 28px 7px 11px;
-            border: 1px solid var(--button-border);
-            background-color: var(--button-bg);
-            color: var(--text-primary);
-            border-radius: 4px;
-            font-size: 12px;
-            cursor: pointer;
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23999999%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
-            background-repeat: no-repeat;
-            background-position: right 8px top 50%;
-            background-size: 9px auto;
-            min-width: 130px;
-            font-size: 12px;
-            font-weight: 500;
-            transition: border-color 0.15s;
-        }
-        
-        [data-theme="dark"] select {
-             background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
-        }
-
-        .reset-btn {
-            padding: 7px 16px;
-            border: 1.5px solid var(--button-border);
-            background: transparent;
-            color: var(--text-secondary);
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.15s;
-        }
-        .reset-btn:hover { 
-            border-color: #d32f2f; 
-            color: #d32f2f;
-            background: #fff5f5;
-        }
-        [data-theme="dark"] .reset-btn:hover { background: #1a0000; }
-
-        .stats {
-            padding: 10px 20px;
-            font-size: 11px;
-            color: var(--text-secondary);
-            display: flex;
-            gap: 15px;
-        }
-
-        /* RESPONSIVE TABLE */
-        .table-container { 
-            overflow-x: auto; 
-            -webkit-overflow-scrolling: touch;
-            padding-bottom: 20px;
-        }
-        
-        table { width: 100%; border-collapse: collapse; }
-        
-        thead {
-            background: var(--bg-header);
-            border-top: 1px solid var(--border-color);
-            border-bottom: 2px solid var(--border-color);
-        }
-        
-        th {
-            padding: 12px 12px;
-            text-align: left;
-            font-weight: 700;
-            font-size: 11px;
-            text-transform: uppercase;
-            color: var(--text-secondary);
-            cursor: pointer;
-            user-select: none;
-            white-space: nowrap;
-        }
-        th:hover { color: var(--text-primary); }
-        
-        th::after {
-            content: '↕';
-            font-size: 10px;
-            margin-left: 4px;
-            opacity: 0.2;
-        }
-        th.sort-asc::after { content: '▲'; opacity: 1; color: var(--active-bg); }
-        th.sort-desc::after { content: '▼'; opacity: 1; color: var(--active-bg); }
-        th.no-sort { cursor: default; }
-        th.no-sort::after { content: ''; }
-
-        td {
-            padding: 10px 12px;
-            font-size: 13px;
-            color: var(--text-primary);
-            border-bottom: 1px solid var(--border-color);
-            vertical-align: middle;
-            white-space: nowrap;
-        }
-        
-        /* Title Column Responsiveness */
-        #thTitle, td:nth-child(5) {
-            white-space: normal;
-            min-width: 280px;
-            max-width: 480px;
-            line-height: 1.5;
-        }
-
-        /* Note Column Responsiveness */
-        #thNote, td:nth-child(6) {
-            min-width: 150px;
-            white-space: normal;
-            font-style: italic;
-            color: var(--text-secondary);
-            font-size: 12px;
-        }
-
-        tbody tr:hover { background: var(--bg-hover); }
-
-        /* BADGES */
-        .category-cell {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        .category-kuesioner { background: #e3f2fd; color: #1565c0; }
-        .category-klasifikasi { background: #f3e5f5; color: #6a1b9a; }
-        .category-pedoman { background: #fff3e0; color: #ef6c00; }
-        .category-publikasi { background: #e8f5e9; color: #2e7d32; }
-        .category-sejarah { background: #fce4ec; color: #c2185b; }
-        .category-contoh-mikrodata { background: #f3e5f5; color: #7b1fa2; }
-        
-        [data-theme="dark"] .category-kuesioner { background: #0d47a1; color: #bbdefb; }
-        [data-theme="dark"] .category-klasifikasi { background: #4a148c; color: #e1bee7; }
-        [data-theme="dark"] .category-pedoman { background: #e65100; color: #ffe0b2; }
-        [data-theme="dark"] .category-publikasi { background: #1b5e20; color: #c8e6c9; }
-        [data-theme="dark"] .category-sejarah { background: #880e4f; color: #f8bbd0; }
-        [data-theme="dark"] .category-contoh-mikrodata { background: #6a1b9a; color: #f3e5f5; }
-
-        .link-btn {
-            display: inline-block;
-            padding: 4px 12px;
-            background: var(--link-color);
-            color: #fff;
-            border-radius: 4px;
-            text-decoration: none;
-            font-size: 11px;
-            font-weight: 600;
-            transition: opacity 0.2s;
-        }
-        [data-theme="dark"] .link-btn { color: #000; }
-        .link-btn:hover { opacity: 0.8; }
-        .link-unsafe {
-            font-size: 11px;
-            color: var(--text-secondary);
-            cursor: default;
-        }
-
-        .lang-badge {
-            font-size: 10px;
-            font-weight: 700;
-            padding: 1px 4px;
-            border-radius: 3px;
-            margin-left: 6px;
-            border: 1px solid currentColor;
-            opacity: 0.7;
-            display: inline-block;
-            vertical-align: middle;
-        }
-        .lang-id { color: #d32f2f; background: #ffebee; border-color: #ffcdd2; }
-        .lang-en { color: #00796b; background: #e0f2f1; border-color: #b2dfdb; }
-        [data-theme="dark"] .lang-id { color: #ffcdd2; background: #b71c1c; border-color: #e57373; }
-        [data-theme="dark"] .lang-en { color: #b2dfdb; background: #004d40; border-color: #4db6ac; }
-
-        .note-cell { font-size: 12px; color: var(--text-secondary); font-style: italic; }
-        .no-results { text-align: center; padding: 40px; color: var(--text-secondary); }
-
-        @media (max-width: 768px) {
-            .filter-section { padding: 10px 12px; }
-            .category-group { flex-wrap: wrap; }
-            .period-group { flex-direction: column; align-items: stretch; }
-            select { min-width: unset; width: 100%; }
-            .reset-btn { width: 100%; text-align: center; }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <div class="title-group">
-                <h1 id="pageTitle">📊 Arsip Tidak Resmi</h1>
-                <div class="update-info">
-                    <span class="update-item">
-                        <span class="update-icon">🗄️</span>
-                        <span id="dbUpdateLabel">Data diperbarui:</span>
-                        <span id="dbUpdateTime">—</span>
-                    </span>
-                    <span class="update-item">
-                        <span class="update-icon">🛠️</span>
-                        <span id="siteUpdateLabel">Situs diperbarui:</span>
-                        <span id="siteUpdateTime">—</span>
-                    </span>
-                </div>
-            </div>
-            <div class="header-controls">
-                <button class="toggle-btn" id="langToggle">🌐 EN</button>
-                <button class="toggle-btn" id="themeToggle">🌙 Dark</button>
-            </div>
-        </div>
-        
-        <div class="controls">
-            <div class="search-container">
-                <input type="text" id="searchInput" class="search-box" placeholder="🔍 Cari dokumen, tahun, atau kategori...">
-            </div>
-            
-            <div class="filters-wrapper">
-                <div class="filter-section">
-                    <span class="section-label" id="labelCategory">Kategori</span>
-                    <div class="category-group">
-                        <button class="filter-btn active" data-filter="all" data-lang-id="Semua" data-lang-en="All">Semua</button>
-                        <button class="filter-btn" data-filter="kuesioner" data-lang-id="Kuesioner" data-lang-en="Questionnaire">Kuesioner</button>
-                        <button class="filter-btn" data-filter="klasifikasi" data-lang-id="Klasifikasi" data-lang-en="Classification">Klasifikasi</button>
-                        <button class="filter-btn" data-filter="pedoman" data-lang-id="Pedoman" data-lang-en="Guidelines">Pedoman</button>
-                        <button class="filter-btn" data-filter="publikasi" data-lang-id="Publikasi" data-lang-en="Publications">Publikasi</button>
-                        <button class="filter-btn" data-filter="sejarah" data-lang-id="Sejarah" data-lang-en="History">Sejarah</button>
-                        <button class="filter-btn" data-filter="contoh mikrodata" data-lang-id="Contoh Mikrodata" data-lang-en="Sample Microdata">Contoh Mikrodata</button>
+        <header class="header" id="mainHeader">
+            <div class="container">
+                <div class="header-top">
+                    <div>
+                        <h1 class="site-title">ARSIP_TIDAK_RESMI.2026</h1>
+                        <div class="dashboard-meta" role="status" aria-live="polite">
+                            <span>v5.9</span> /
+                            <span id="dbVer">DB: -</span> /
+                            <span id="statsCount">0 FILE</span>
+                        </div>
+                    </div>
+                    <div class="header-actions">
+                        <button
+                            type="button"
+                            class="btn"
+                            id="viewToggle"
+                            aria-label="Ganti tampilan daftar"
+                        >
+                            ▦/☰
+                        </button>
+                        <button
+                            type="button"
+                            class="btn"
+                            id="themeToggle"
+                            aria-label="Ganti mode tema"
+                            aria-pressed="false"
+                        >
+                            ◐
+                        </button>
                     </div>
                 </div>
 
-                <div class="filter-section">
-                    <span class="section-label" id="labelPeriod">Periode</span>
-                    <div class="period-group">
-                        <select id="yearFilter">
-                            <option value="all" data-lang-id="Semua Tahun" data-lang-en="All Years">Semua Tahun</option>
-                        </select>
-                        <select id="monthFilter">
-                            <option value="all" data-lang-id="Semua Bulan" data-lang-en="All Months">Semua Bulan</option>
-                            <option value="januari">Januari / January</option>
-                            <option value="februari">Februari / February</option>
-                            <option value="maret">Maret / March</option>
-                            <option value="april">April</option>
-                            <option value="mei">Mei / May</option>
-                            <option value="juni">Juni / June</option>
-                            <option value="juli">Juli / July</option>
-                            <option value="agustus">Agustus / August</option>
-                            <option value="september">September</option>
-                            <option value="oktober">Oktober / October</option>
-                            <option value="november">November</option>
-                            <option value="desember">Desember / December</option>
-                        </select>
-                        <button id="resetFilters" class="reset-btn">Reset</button>
+                <nav class="controls" aria-label="Filter dokumen">
+                    <div class="filter-row" id="catFilters">
+                        <button type="button" class="btn active" data-cat="all" aria-pressed="true">
+                            SEMUA
+                        </button>
+                        <button type="button" class="btn" data-cat="kuesioner" aria-pressed="false">
+                            KUESIONER
+                        </button>
+                        <button type="button" class="btn" data-cat="klasifikasi" aria-pressed="false">
+                            KLASIFIKASI
+                        </button>
+                        <button type="button" class="btn" data-cat="pedoman" aria-pressed="false">
+                            PEDOMAN
+                        </button>
+                        <button type="button" class="btn" data-cat="publikasi" aria-pressed="false">
+                            PUBLIKASI
+                        </button>
+                        <button type="button" class="btn" data-cat="sejarah" aria-pressed="false">
+                            SEJARAH
+                        </button>
+                        <button type="button" class="btn" data-cat="contoh mikrodata" aria-pressed="false">
+                            MIKRODATA
+                        </button>
                     </div>
-                </div>
+                    <div class="filter-row">
+                        <label class="sr-only" for="yearFilter">Filter tahun</label>
+                        <select id="yearFilter" aria-label="Filter tahun">
+                            <option value="all">SEMUA TAHUN</option>
+                        </select>
+                        <label class="sr-only" for="monthFilter">Filter periode</label>
+                        <select id="monthFilter" aria-label="Filter periode">
+                            <option value="all">SEMUA BULAN</option>
+                        </select>
+                        <button type="button" class="btn" id="resetBtn">RESET</button>
+                    </div>
+                </nav>
             </div>
+        </header>
+
+        <div class="container">
+            <noscript>
+                <p class="noscript-warning">
+                    Situs ini membutuhkan JavaScript untuk menampilkan data arsip.
+                </p>
+            </noscript>
+            <main id="mainGrid" class="grid view-list" tabindex="-1"></main>
         </div>
-        
-        <div class="stats">
-            <div><span id="totalLabel">Total</span>: <span id="totalCount">0</span></div>
-            <div><span id="showingLabel">Tampil</span>: <span id="visibleCount">0</span></div>
-        </div>
-        
-        <div class="table-container">
-            <table id="dataTable">
-                <thead>
-                    <tr>
-                        <th style="width: 1%;" class="no-sort">No</th>
-                        <th style="width: 1%;" id="thYear" data-sort="year">Tahun</th>
-                        <th style="width: 1%;" id="thPeriod" data-sort="period">Periode</th>
-                        <th style="width: 1%;" class="no-sort" id="thLink">Link</th>
-                        <th id="thTitle" data-sort="title">Judul</th>
-                        <th id="thNote" data-sort="note">Catatan</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                </tbody>
-            </table>
-            <div id="noResults" class="no-results" style="display: none;">
-                <span id="noResultsText">Tidak ada hasil yang ditemukan</span>
-            </div>
-        </div>
-    </div>
 
-    <script src="data.js"></script>
-    <script>
-        // CONFIG & STATE
-        let currentLang = 'id';
-        let sortConfig = {
-            key: 'year',
-            direction: 'desc',
-            secondaryKey: 'period',
-            secondaryDirection: 'desc'
-        };
-
-        const monthWeight = {
-            'januari': 1, 'january': 1,
-            'februari': 2, 'february': 2,
-            'maret': 3, 'march': 3,
-            'april': 4,
-            'mei': 5, 'may': 5,
-            'juni': 6, 'june': 6,
-            'juli': 7, 'july': 7,
-            'agustus': 8, 'august': 8,
-            'september': 9,
-            'oktober': 10, 'october': 10,
-            'november': 11,
-            'desember': 12, 'december': 12,
-            '-': 0
-        };
-
-        // DATABASE (With ID/EN tags stripped from titles)
-        // Data dimuat dari data.js — jangan edit bagian ini.
-        const data = window.SAKERNAS_DATA || [];
-        
-        let filteredData = [...data];
-        let currentFilter = 'all';
-        let currentYearFilter = 'all';
-        let currentMonthFilter = 'all';
-        
-        // TRANSLATIONS
-        const translations = {
-            id: {
-                pageTitle: '📊 Arsip Tidak Resmi',
-                dbUpdated: 'Data diperbarui:',
-                siteUpdated: 'Situs diperbarui:',
-                searchPlaceholder: '🔍 Cari...',
-                year: 'Tahun',
-                month: 'Bulan',
-                period: 'Periode',
-                category: 'Kategori',
-                title: 'Judul',
-                note: 'Catatan',
-                link: 'Link',
-                total: 'Total',
-                showing: 'Tampil',
-                noResults: 'Tidak ada hasil yang ditemukan',
-                openFile: 'Buka',
-                reset: 'Reset',
-                all: 'Semua',
-                questionnaire: 'Kuesioner',
-                classification: 'Klasifikasi',
-                guidelines: 'Pedoman',
-                publications: 'Publikasi',
-                history: 'Sejarah',
-                microdata: 'Contoh Mikrodata'
-            },
-            en: {
-                pageTitle: '📊 Unofficial Archive',
-                dbUpdated: 'Data updated:',
-                siteUpdated: 'Site updated:',
-                searchPlaceholder: '🔍 Search...',
-                year: 'Year',
-                month: 'Month',
-                period: 'Period',
-                category: 'Category',
-                title: 'Title',
-                note: 'Note',
-                link: 'Link',
-                total: 'Total',
-                showing: 'Showing',
-                noResults: 'No results found',
-                openFile: 'Open',
-                reset: 'Reset',
-                all: 'All',
-                questionnaire: 'Questionnaire',
-                classification: 'Classification',
-                guidelines: 'Guidelines',
-                publications: 'Publications',
-                history: 'History',
-                microdata: 'Sample Microdata'
-            }
-        };
-        
-        // --- HELPER FUNCTIONS ---
-        function normalizeMonth(month) {
-            if (!month) return '-';
-            const m = month.toString().toLowerCase();
-            const map = {
-                'januari': 'januari', 'january': 'januari',
-                'februari': 'februari', 'february': 'februari',
-                'maret': 'maret', 'march': 'maret',
-                'april': 'april',
-                'mei': 'mei', 'may': 'mei',
-                'juni': 'juni', 'june': 'juni',
-                'juli': 'juli', 'july': 'juli',
-                'agustus': 'agustus', 'august': 'agustus',
-                'september': 'september',
-                'oktober': 'oktober', 'october': 'oktober',
-                'november': 'november',
-                'desember': 'desember', 'december': 'desember'
-            };
-            return map[m] || m;
-        }
-        
-        function populateYearFilter() {
-            const years = [...new Set(data.map(item => item.year))].sort((a, b) => {
-                const numA = (a === "-") ? -9999 : a;
-                const numB = (b === "-") ? -9999 : b;
-                if (numA === -9999) return 1; 
-                if (numB === -9999) return -1;
-                return numB - numA; 
-            });
-            
-            const yearSelect = document.getElementById('yearFilter');
-            years.forEach(year => {
-                const option = document.createElement('option');
-                option.value = year;
-                option.textContent = year;
-                yearSelect.appendChild(option);
-            });
-        }
-        
-        // --- DARK MODE LOGIC ---
-        const themeToggleBtn = document.getElementById('themeToggle');
-        const theme = localStorage.getItem('theme');
-
-        // Apply saved theme on load
-        if (theme === 'dark') {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            themeToggleBtn.textContent = '☀️ Light';
-        }
-
-        themeToggleBtn.addEventListener('click', () => {
-            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-            if (isDark) {
-                document.documentElement.setAttribute('data-theme', 'light');
-                themeToggleBtn.textContent = '🌙 Dark';
-                localStorage.setItem('theme', 'light');
-            } else {
-                document.documentElement.setAttribute('data-theme', 'dark');
-                themeToggleBtn.textContent = '☀️ Light';
-                localStorage.setItem('theme', 'dark');
-            }
-        });
-
-        // --- LANGUAGE TOGGLE LOGIC ---
-        const langToggleBtn = document.getElementById('langToggle');
-        
-        function updateLanguage() {
-            const t = translations[currentLang];
-            
-            // Update page title
-            document.getElementById('pageTitle').textContent = t.pageTitle;
-            
-            // Update search placeholder
-            document.getElementById('searchInput').placeholder = t.searchPlaceholder;
-            
-            // Update labels
-            document.getElementById('yearLabel').textContent = t.year + ':';
-            document.getElementById('monthLabel').textContent = t.month + ':';
-            
-            // Update table headers
-            document.getElementById('thYear').textContent = t.year;
-            document.getElementById('thPeriod').textContent = t.period;
-            document.getElementById('thTitle').textContent = t.title;
-            document.getElementById('thNote').textContent = t.note;
-            document.getElementById('thLink').textContent = t.link;
-            
-            // Update stats
-            document.getElementById('totalLabel').textContent = t.total;
-            document.getElementById('showingLabel').textContent = t.showing;
-            
-            // Update no results text
-            document.getElementById('noResultsText').textContent = t.noResults;
-            
-            // Update filter buttons
-            const filterButtons = document.querySelectorAll('.filter-btn');
-            filterButtons[0].textContent = t.all;
-            filterButtons[1].textContent = t.questionnaire;
-            filterButtons[2].textContent = t.classification;
-            filterButtons[3].textContent = t.guidelines;
-            filterButtons[4].textContent = t.publications;
-            filterButtons[5].textContent = t.history;
-            filterButtons[6].textContent = t.microdata;
-            
-            // Update reset button
-            document.getElementById('resetFilters').textContent = t.reset;
-            
-            // Update year/month filter first options
-            const yearAllOption = document.querySelector('#yearFilter option[value="all"]');
-            const monthAllOption = document.querySelector('#monthFilter option[value="all"]');
-            if (yearAllOption) yearAllOption.textContent = t.all;
-            if (monthAllOption) monthAllOption.textContent = t.all;
-            
-            // Update timestamp labels
-            document.getElementById('dbUpdateLabel').textContent  = t.dbUpdated;
-            document.getElementById('siteUpdateLabel').textContent = t.siteUpdated;
-
-            // Re-render table to update button text
-            renderTable();
-        }
-        
-        langToggleBtn.addEventListener('click', () => {
-            currentLang = currentLang === 'id' ? 'en' : 'id';
-            langToggleBtn.textContent = currentLang === 'id' ? '🌐 EN' : '🌐 ID';
-            updateLanguage();
-        });
-
-        // --- CORE LOGIC (SORT & RENDER) ---
-        function sortData(key) {
-            if (sortConfig.key === key) {
-                sortConfig.direction = sortConfig.direction === 'asc' ? 'desc' : 'asc';
-            } else {
-                sortConfig.key = key;
-                sortConfig.direction = 'asc'; 
-                if (key === 'year' || key === 'period') sortConfig.direction = 'desc'; 
-            }
-
-            document.querySelectorAll('th[data-sort]').forEach(th => {
-                th.classList.remove('sort-asc', 'sort-desc');
-                if (th.dataset.sort === key) {
-                    th.classList.add(sortConfig.direction === 'asc' ? 'sort-asc' : 'sort-desc');
-                }
-            });
-
-            filteredData.sort((a, b) => {
-                let valA, valB;
-
-                if (sortConfig.key === 'year') {
-                    valA = a.year === '-' ? -9999 : a.year;
-                    valB = b.year === '-' ? -9999 : b.year;
-                } else if (sortConfig.key === 'period') {
-                    valA = monthWeight[normalizeMonth(a.period)] || 0;
-                    valB = monthWeight[normalizeMonth(b.period)] || 0;
-                } else {
-                    valA = (a[sortConfig.key] || '').toString().toLowerCase();
-                    valB = (b[sortConfig.key] || '').toString().toLowerCase();
-                }
-
-                if (valA < valB) return sortConfig.direction === 'asc' ? -1 : 1;
-                if (valA > valB) return sortConfig.direction === 'asc' ? 1 : -1;
-
-                if (sortConfig.key !== 'year') {
-                    let yA = a.year === '-' ? -9999 : a.year;
-                    let yB = b.year === '-' ? -9999 : b.year;
-                    if (yA !== yB) return yB - yA; 
-                }
-                
-                if (sortConfig.key !== 'period') {
-                    let pA = monthWeight[normalizeMonth(a.period)] || 0;
-                    let pB = monthWeight[normalizeMonth(b.period)] || 0;
-                    return pB - pA; 
-                }
-
-                return 0;
-            });
-
-            renderTable();
-        }
-
-        // ── SECURITY HELPERS ────────────────────────────────────
-        // Langkah 2a: escapeHtml — cegah XSS dari field data
-        function escapeHtml(str) {
-            return String(str ?? '')
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#39;');
-        }
-
-        // Langkah 2b: isSafeLink — whitelist domain yang diizinkan
-        const ALLOWED_DOMAINS = [
-            'drive.google.com',
-            'bps.go.id',
-            'dsbb.imf.org',
-            'rand.org'
-        ];
-        function isSafeLink(url) {
-            if (!url || !url.trim()) return false;
-            try {
-                const host = new URL(url).hostname.toLowerCase();
-                return ALLOWED_DOMAINS.some(d => host === d || host.endsWith('.' + d));
-            } catch { return false; }
-        }
-        // ─────────────────────────────────────────────────────────
-
-        function renderTable() {
-            const tbody = document.getElementById('tableBody');
-            const noResults = document.getElementById('noResults');
-            tbody.innerHTML = '';
-            
-            const t = translations[currentLang];
-            
-            if (filteredData.length === 0) {
-                document.getElementById('dataTable').style.display = 'none';
-                noResults.style.display = 'block';
-                document.getElementById('visibleCount').textContent = '0';
-                return;
-            }
-            
-            document.getElementById('dataTable').style.display = 'table';
-            noResults.style.display = 'none';
-            
-            filteredData.forEach((item, index) => {
-                const row = document.createElement('tr');
-
-                // Langkah 2a: escape semua field teks sebelum ke DOM
-                const safeYear     = escapeHtml(item.year);
-                const safePeriod   = escapeHtml(item.period);
-                const safeTitle    = escapeHtml(item.title);
-                const safeNote     = escapeHtml(item.note) || '-';
-                const safeLang     = escapeHtml(item.lang).toUpperCase();
-                const safeCategory = escapeHtml(item.category);
-                const safeCatClass = escapeHtml(item.category.toLowerCase().replace(/\s+/g, '-'));
-
-                // Langkah 2b: validasi link sebelum ditampilkan
-                // Langkah 3: rel="noopener noreferrer" pada setiap target="_blank"
-                let displayLink;
-                if (isSafeLink(item.link)) {
-                    displayLink = `<a href="${escapeHtml(item.link)}" target="_blank" rel="noopener noreferrer" class="link-btn">${t.openFile}</a>`;
-                } else if (item.link) {
-                    displayLink = `<span class="link-unsafe" title="Domain tidak dikenali">⚠️ N/A</span>`;
-                } else {
-                    displayLink = '-';
-                }
-
-                const langBadge = item.lang
-                    ? `<span class="lang-badge lang-${safeLang.toLowerCase()}">${safeLang}</span>`
-                    : '';
-                const catBadge = `<span class="category-cell category-${safeCatClass}">${safeCategory}</span>`;
-
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${safeYear}</td>
-                    <td>${safePeriod}</td>
-                    <td>${displayLink}</td>
-                    <td>${catBadge} ${safeTitle}${langBadge}</td>
-                    <td class="note-cell">${safeNote}</td>
-                `;
-                
-                tbody.appendChild(row);
-            });
-            
-            document.getElementById('visibleCount').textContent = filteredData.length;
-        }
-        
-        function applyFilters() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            
-            filteredData = data.filter(item => {
-                const matchesSearch = 
-                    item.year.toString().includes(searchTerm) ||
-                    item.period.toLowerCase().includes(searchTerm) ||
-                    item.category.toLowerCase().includes(searchTerm) ||
-                    item.title.toLowerCase().includes(searchTerm) ||
-                    (item.note && item.note.toLowerCase().includes(searchTerm));
-                
-                const matchesCategory = currentFilter === 'all' || item.category.toLowerCase() === currentFilter;
-                const matchesYear = currentYearFilter === 'all' || item.year.toString() === currentYearFilter;
-                
-                const normalizedItemMonth = normalizeMonth(item.period);
-                const normalizedFilterMonth = normalizeMonth(currentMonthFilter);
-                const matchesMonth = currentMonthFilter === 'all' || normalizedItemMonth === normalizedFilterMonth;
-
-                return matchesSearch && matchesCategory && matchesYear && matchesMonth;
-            });
-            
-            const currentKey = sortConfig.key;
-            // Re-apply sort logic internally to avoid flipping direction
-             filteredData.sort((a, b) => {
-                let valA, valB;
-                if (sortConfig.key === 'year') {
-                    valA = a.year === '-' ? -9999 : a.year;
-                    valB = b.year === '-' ? -9999 : b.year;
-                } else if (sortConfig.key === 'period') {
-                    valA = monthWeight[normalizeMonth(a.period)] || 0;
-                    valB = monthWeight[normalizeMonth(b.period)] || 0;
-                } else {
-                    valA = (a[sortConfig.key] || '').toString().toLowerCase();
-                    valB = (b[sortConfig.key] || '').toString().toLowerCase();
-                }
-                if (valA < valB) return sortConfig.direction === 'asc' ? -1 : 1;
-                if (valA > valB) return sortConfig.direction === 'asc' ? 1 : -1;
-                
-                if (sortConfig.key !== 'year') {
-                    let yA = a.year === '-' ? -9999 : a.year;
-                    let yB = b.year === '-' ? -9999 : b.year;
-                    if (yA !== yB) return yB - yA;
-                }
-                if (sortConfig.key !== 'period') {
-                    let pA = monthWeight[normalizeMonth(a.period)] || 0;
-                    let pB = monthWeight[normalizeMonth(b.period)] || 0;
-                    return pB - pA;
-                }
-                return 0;
-            });
-            renderTable();
-        }
-        
-        document.getElementById('searchInput').addEventListener('input', applyFilters);
-        
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                currentFilter = this.dataset.filter;
-                applyFilters();
-            });
-        });
-        
-        document.getElementById('yearFilter').addEventListener('change', function() {
-            currentYearFilter = this.value;
-            applyFilters();
-        });
-        
-        document.getElementById('monthFilter').addEventListener('change', function() {
-            currentMonthFilter = this.value;
-            applyFilters();
-        });
-        
-        document.getElementById('resetFilters').addEventListener('click', function() {
-            currentFilter = 'all';
-            currentYearFilter = 'all';
-            currentMonthFilter = 'all';
-            
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            document.querySelector('.filter-btn[data-filter="all"]').classList.add('active');
-            document.getElementById('yearFilter').value = 'all';
-            document.getElementById('monthFilter').value = 'all';
-            document.getElementById('searchInput').value = '';
-            
-            applyFilters();
-        });
-
-        document.querySelectorAll('th[data-sort]').forEach(th => {
-            th.addEventListener('click', () => {
-                sortData(th.dataset.sort);
-            });
-        });
-        
-        document.getElementById('totalCount').textContent = data.length;
-        populateYearFilter();
-        
-        const yearTh = document.querySelector('th[data-sort="year"]');
-        if(yearTh) yearTh.classList.add('sort-desc');
-        
-        applyFilters();
-
-        // ── TIMESTAMP DISPLAY ──────────────────────────────────
-        // siteBuiltAt = waktu index.html ini terakhir dibuat/diedit
-        // dbBuiltAt   = dibaca dari metadata di data.js (window.SAKERNAS_META)
-        const MONTHS_ID = ['Januari','Februari','Maret','April','Mei','Juni',
-                           'Juli','Agustus','September','Oktober','November','Desember'];
-        const MONTHS_EN = ['January','February','March','April','May','June',
-                           'July','August','September','October','November','December'];
-
-        function formatTs(isoStr, lang) {
-            if (!isoStr) return '—';
-            const d = new Date(isoStr);
-            if (isNaN(d)) return isoStr;
-            const months = lang === 'en' ? MONTHS_EN : MONTHS_ID;
-            const day   = d.getDate();
-            const mon   = months[d.getMonth()];
-            const yr    = d.getFullYear();
-            const hh    = String(d.getHours()).padStart(2,'0');
-            const mm    = String(d.getMinutes()).padStart(2,'0');
-            return `${day} ${mon} ${yr}, ${hh}:${mm}`;
-        }
-
-        function renderTimestamps() {
-            const lang = currentLang;
-            const meta = window.SAKERNAS_META || {};
-            document.getElementById('dbUpdateTime').textContent   = formatTs(meta.dbBuiltAt, lang);
-            document.getElementById('siteUpdateTime').textContent = formatTs(meta.siteBuiltAt, lang);
-        }
-
-        renderTimestamps();
-
-        // Re-render saat bahasa ganti (sudah dipanggil via updateLanguage, tapi
-        // tambahan ini agar format bulan juga ikut berganti)
-        const _origUpdateLang = langToggleBtn.onclick;
-        langToggleBtn.addEventListener('click', renderTimestamps);
-    </script>
-</body>
+        <script src="data-manifest.js" defer></script>
+        <script src="app.js" defer></script>
+    </body>
 </html>
