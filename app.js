@@ -345,6 +345,42 @@
         return (monthWeight[b.toLowerCase()] || 0) - (monthWeight[a.toLowerCase()] || 0);
     }
 
+    function formatDbUpdatedLabel(dbBuiltAt) {
+        if (!dbBuiltAt) {
+            return "Data diperbarui di -";
+        }
+
+        var datePart = String(dbBuiltAt).split("T")[0];
+        var match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(datePart);
+        if (!match) {
+            return "Data diperbarui di -";
+        }
+
+        var year = match[1];
+        var monthNum = Number(match[2]);
+        var day = String(Number(match[3]));
+        var monthNames = [
+            "Januari",
+            "Februari",
+            "Maret",
+            "April",
+            "Mei",
+            "Juni",
+            "Juli",
+            "Agustus",
+            "September",
+            "Oktober",
+            "November",
+            "Desember",
+        ];
+        var monthName = monthNames[monthNum - 1];
+        if (!monthName) {
+            return "Data diperbarui di -";
+        }
+
+        return "Data diperbarui di " + day + " " + monthName + " " + year;
+    }
+
     function setTheme(nextTheme) {
         var safeTheme = nextTheme === "dark" ? "dark" : "light";
         document.documentElement.setAttribute("data-theme", safeTheme);
@@ -381,7 +417,8 @@
         if (!els.header) {
             return;
         }
-        document.documentElement.style.setProperty("--header-h", els.header.offsetHeight + "px");
+        var headerHeight = Math.ceil(els.header.getBoundingClientRect().height);
+        document.documentElement.style.setProperty("--header-h", headerHeight + "px");
     }
 
     function scheduleStickyOffsetUpdate() {
@@ -466,7 +503,7 @@
         });
 
         if (els.statsCount) {
-            els.statsCount.textContent = filtered.length + " FILE";
+            els.statsCount.textContent = filtered.length + " Berkas";
         }
 
         var grouped = new Map();
@@ -604,8 +641,8 @@
             els.monthFilter.appendChild(option);
         });
 
-        if (meta.dbBuiltAt && els.dbVer) {
-            els.dbVer.textContent = "DB: " + meta.dbBuiltAt.split("T")[0].replace(/-/g, ".");
+        if (els.dbVer) {
+            els.dbVer.textContent = formatDbUpdatedLabel(meta.dbBuiltAt || "");
         }
     }
 
