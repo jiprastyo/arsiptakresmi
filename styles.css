@@ -19,6 +19,7 @@
     --z-year: 950;
     --z-month: 900;
     --gap: 14px;
+    --sticky-seam-fix: 1px;
 
     --t-kuesioner: rgba(2, 132, 199, 0.12);
     --c-kuesioner: #075985;
@@ -238,7 +239,7 @@ select {
     font-weight: 700;
     color: var(--accent);
     position: sticky;
-    top: var(--header-h, 110px);
+    top: calc(var(--header-h, 110px) - var(--sticky-seam-fix));
     z-index: var(--z-year);
 }
 
@@ -250,7 +251,7 @@ select {
     background: var(--bg-month);
     padding: 6px 14px;
     position: sticky;
-    top: calc(var(--header-h, 110px) + 34px);
+    top: calc(var(--header-h, 110px) + 34px - var(--sticky-seam-fix));
     z-index: var(--z-month);
 }
 
