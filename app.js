@@ -527,7 +527,7 @@
 
             var summary = document.createElement("summary");
             summary.className = "syntax-summary";
-            summary.textContent = file.indicator ? "Sintaks: " + file.indicator : "Lihat Sintaks SPSS";
+            summary.textContent = file.indicator ? file.indicator : "Lihat Sintaks SPSS";
 
             var syntaxContent = document.createElement("div");
             syntaxContent.className = "syntax-content";

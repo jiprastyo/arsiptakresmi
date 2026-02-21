@@ -420,7 +420,7 @@ select {
 
 .syntax-pre {
     margin: 0;
-    padding: 12px 14px;
+    padding: 12px 14px 12px 64px;
     overflow-x: auto;
     font-family: var(--font-mono);
     font-size: 13px;
@@ -431,7 +431,7 @@ select {
 .copy-btn {
     position: absolute;
     top: 6px;
-    right: 6px;
+    left: 8px;
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     color: #fff;
