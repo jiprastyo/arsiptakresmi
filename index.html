@@ -1,23 +1,17 @@
 <!doctype html>
 <html lang="id" data-theme="light">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta
-            name="robots"
-            content="noindex, nofollow, noarchive, nosnippet, noimageindex, max-image-preview:none, max-snippet:0, max-video-preview:0"
-        />
-        <meta
-            name="googlebot"
-            content="noindex, nofollow, noarchive, nosnippet, noimageindex"
-        />
-        <meta name="bingbot" content="noindex, nofollow, noarchive" />
-        <meta name="slurp" content="noindex, nofollow" />
-        <meta name="duckduckbot" content="noindex, nofollow" />
-        <meta name="referrer" content="no-referrer" />
-        <meta
-            http-equiv="Content-Security-Policy"
-            content="default-src 'none';
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots"
+        content="noindex, nofollow, noarchive, nosnippet, noimageindex, max-image-preview:none, max-snippet:0, max-video-preview:0" />
+    <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+    <meta name="bingbot" content="noindex, nofollow, noarchive" />
+    <meta name="slurp" content="noindex, nofollow" />
+    <meta name="duckduckbot" content="noindex, nofollow" />
+    <meta name="referrer" content="no-referrer" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none';
                    base-uri 'none';
                    form-action 'none';
                    script-src 'self';
@@ -26,95 +20,94 @@
                    frame-src https://drive.google.com;
                    connect-src 'none';
                    object-src 'none';
-                   manifest-src 'self';"
-        />
-        <meta name="color-scheme" content="light dark" />
-        <title>Arsip Tidak Resmi v5.9</title>
-        <link rel="stylesheet" href="styles.css" />
-    </head>
-    <body>
-        <a class="skip-link" href="#mainGrid">Lewati ke daftar dokumen</a>
+                   manifest-src 'self';" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Arsip Tidak Resmi v5.9</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
 
-        <header class="header" id="mainHeader">
-            <div class="container">
-                <div class="header-top">
-                    <div>
-                        <h1 class="site-title">ARSIP TAK RESMI</h1>
-                        <div class="dashboard-meta" role="status" aria-live="polite">
-                            <span id="dbVer">Data diperbarui di -</span> /
-                            <span id="statsCount">0 Berkas</span>
-                        </div>
-                    </div>
-                    <div class="header-actions">
-                        <button
-                            type="button"
-                            class="btn"
-                            id="viewToggle"
-                            aria-label="Ganti tampilan daftar"
-                        >
-                            ▦/☰
-                        </button>
-                        <button
-                            type="button"
-                            class="btn"
-                            id="themeToggle"
-                            aria-label="Ganti mode tema"
-                            aria-pressed="false"
-                        >
-                            ◐
-                        </button>
+<body>
+    <a class="skip-link" href="#mainGrid">Lewati ke daftar dokumen</a>
+
+    <header class="header" id="mainHeader">
+        <div class="container">
+            <div class="header-top">
+                <div>
+                    <h1 class="site-title">ARSIP TAK RESMI</h1>
+                    <div class="dashboard-meta" role="status" aria-live="polite">
+                        <span id="dbVer">Data diperbarui di -</span> /
+                        <span id="statsCount">0 Berkas</span>
                     </div>
                 </div>
-
-                <nav class="controls" aria-label="Filter dokumen">
-                    <div class="filter-row" id="catFilters">
-                        <button type="button" class="btn active" data-cat="all" aria-pressed="true">
-                            SEMUA
-                        </button>
-                        <button type="button" class="btn" data-cat="kuesioner" aria-pressed="false">
-                            KUESIONER
-                        </button>
-                        <button type="button" class="btn" data-cat="klasifikasi" aria-pressed="false">
-                            KLASIFIKASI
-                        </button>
-                        <button type="button" class="btn" data-cat="pedoman" aria-pressed="false">
-                            PEDOMAN
-                        </button>
-                        <button type="button" class="btn" data-cat="publikasi" aria-pressed="false">
-                            PUBLIKASI
-                        </button>
-                        <button type="button" class="btn" data-cat="sejarah" aria-pressed="false">
-                            SEJARAH
-                        </button>
-                        <button type="button" class="btn" data-cat="contoh mikrodata" aria-pressed="false">
-                            MIKRODATA
-                        </button>
-                    </div>
-                    <div class="filter-row">
-                        <label class="sr-only" for="yearFilter">Filter tahun</label>
-                        <select id="yearFilter" aria-label="Filter tahun">
-                            <option value="all">SEMUA TAHUN</option>
-                        </select>
-                        <label class="sr-only" for="monthFilter">Filter periode</label>
-                        <select id="monthFilter" aria-label="Filter periode">
-                            <option value="all">SEMUA BULAN</option>
-                        </select>
-                        <button type="button" class="btn" id="resetBtn">RESET</button>
-                    </div>
-                </nav>
+                <div class="header-actions">
+                    <button type="button" class="btn" id="viewToggle" aria-label="Ganti tampilan daftar">
+                        ▦/☰
+                    </button>
+                    <button type="button" class="btn" id="themeToggle" aria-label="Ganti mode tema"
+                        aria-pressed="false">
+                        ◐
+                    </button>
+                </div>
             </div>
-        </header>
 
-        <div class="container">
-            <noscript>
-                <p class="noscript-warning">
-                    Situs ini membutuhkan JavaScript untuk menampilkan data arsip.
-                </p>
-            </noscript>
-            <main id="mainGrid" class="grid view-list" tabindex="-1"></main>
+            <nav class="controls" aria-label="Filter dokumen">
+                <div class="filter-row" id="catFilters">
+                    <button type="button" class="btn active" data-cat="all" aria-pressed="true">
+                        SEMUA
+                    </button>
+                    <button type="button" class="btn" data-cat="kuesioner" aria-pressed="false">
+                        KUESIONER
+                    </button>
+                    <button type="button" class="btn" data-cat="klasifikasi" aria-pressed="false">
+                        KLASIFIKASI
+                    </button>
+                    <button type="button" class="btn" data-cat="pedoman" aria-pressed="false">
+                        PEDOMAN
+                    </button>
+                    <button type="button" class="btn" data-cat="publikasi" aria-pressed="false">
+                        PUBLIKASI
+                    </button>
+                    <button type="button" class="btn" data-cat="sejarah" aria-pressed="false">
+                        SEJARAH
+                    </button>
+                    <button type="button" class="btn" data-cat="sintaks" aria-pressed="false">
+                        SINTAKS
+                    </button>
+                    <button type="button" class="btn" data-cat="contoh mikrodata" aria-pressed="false">
+                        MIKRODATA
+                    </button>
+                </div>
+                <div class="filter-row">
+                    <label class="sr-only" for="yearFilter">Filter tahun</label>
+                    <select id="yearFilter" aria-label="Filter tahun">
+                        <option value="all">SEMUA TAHUN</option>
+                    </select>
+                    <label class="sr-only" for="monthFilter">Filter periode</label>
+                    <select id="monthFilter" aria-label="Filter periode">
+                        <option value="all">SEMUA BULAN</option>
+                    </select>
+                    <label class="sr-only" for="indicatorFilter">Filter indikator sintaks</label>
+                    <select id="indicatorFilter" aria-label="Filter indikator sintaks" style="display: none;"
+                        class="sintaks-highlight">
+                        <option value="all">SEMUA INDIKATOR</option>
+                    </select>
+                    <button type="button" class="btn" id="resetBtn">RESET</button>
+                </div>
+            </nav>
         </div>
+    </header>
 
-        <script src="data-manifest.js" defer></script>
-        <script src="app.js" defer></script>
-    </body>
+    <div class="container">
+        <noscript>
+            <p class="noscript-warning">
+                Situs ini membutuhkan JavaScript untuk menampilkan data arsip.
+            </p>
+        </noscript>
+        <main id="mainGrid" class="grid view-list" tabindex="-1"></main>
+    </div>
+
+    <script src="data/data-manifest.js" defer></script>
+    <script src="app.js" defer></script>
+</body>
+
 </html>

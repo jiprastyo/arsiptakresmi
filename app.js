@@ -5,7 +5,7 @@
         if (window.top !== window.self) {
             window.top.location = window.self.location.href;
         }
-    } catch (_) {}
+    } catch (_) { }
 
     var DEFAULT_XOR_KEY = [
         83, 97, 107, 101, 114, 110, 97, 115, 65, 114, 115, 105, 112, 84, 105, 100,
@@ -38,6 +38,11 @@
             shortLabel: "SEJARAH",
             buttonLabel: "Filter kategori sejarah",
         },
+        sintaks: {
+            className: "b-sintaks",
+            shortLabel: "SINTAKS",
+            buttonLabel: "Filter kategori sintaks",
+        },
         "contoh mikrodata": {
             className: "b-mikrodata",
             shortLabel: "MIKRODATA",
@@ -51,6 +56,7 @@
         "pedoman",
         "publikasi",
         "sejarah",
+        "sintaks",
         "contoh mikrodata",
     ];
 
@@ -91,6 +97,7 @@
     var curYear = "all";
     var curMonth = "all";
     var curCat = "all";
+    var curIndicator = "all";
     var viewMode = "list";
     var stickyRAF = null;
 
@@ -99,6 +106,7 @@
         header: document.getElementById("mainHeader"),
         yearFilter: document.getElementById("yearFilter"),
         monthFilter: document.getElementById("monthFilter"),
+        indicatorFilter: document.getElementById("indicatorFilter"),
         catFilters: document.getElementById("catFilters"),
         resetBtn: document.getElementById("resetBtn"),
         viewToggle: document.getElementById("viewToggle"),
@@ -153,7 +161,7 @@
         if (typeof TextDecoder !== "undefined") {
             try {
                 return new TextDecoder("utf-8").decode(bytes);
-            } catch (_) {}
+            } catch (_) { }
         }
 
         var binary = "";
@@ -216,6 +224,8 @@
             title: raw.title != null ? raw.title : raw.t,
             lang: raw.lang != null ? raw.lang : raw.g,
             note: raw.note != null ? raw.note : raw.n,
+            syntax: raw.syntax != null ? raw.syntax : raw.s,
+            indicator: raw.indicator != null ? raw.indicator : raw.i,
         };
     }
 
@@ -235,6 +245,8 @@
         var title = String((item && item.title) || "").trim() || "Dokumen tanpa judul";
         var lang = String((item && item.lang) || "").trim().toLowerCase();
         var note = String((item && item.note) || "").trim();
+        var syntax = String((item && item.syntax) || "").trim();
+        var indicator = String((item && item.indicator) || "").trim();
 
         return {
             year: yearNum,
@@ -245,6 +257,8 @@
             title: title,
             lang: lang,
             note: note,
+            syntax: syntax,
+            indicator: indicator,
         };
     }
 
@@ -389,7 +403,7 @@
         }
         try {
             localStorage.setItem("arsip-theme", safeTheme);
-        } catch (_) {}
+        } catch (_) { }
         scheduleStickyOffsetUpdate();
     }
 
@@ -397,7 +411,7 @@
         var stored = null;
         try {
             stored = localStorage.getItem("arsip-theme");
-        } catch (_) {}
+        } catch (_) { }
 
         if (stored === "dark" || stored === "light") {
             setTheme(stored);
@@ -435,6 +449,16 @@
             btn.classList.toggle("active", active);
             btn.setAttribute("aria-pressed", active ? "true" : "false");
         });
+
+        if (els.indicatorFilter) {
+            if (curCat === "sintaks") {
+                els.indicatorFilter.style.display = "inline-block";
+            } else {
+                els.indicatorFilter.style.display = "none";
+                curIndicator = "all";
+                els.indicatorFilter.value = "all";
+            }
+        }
     }
 
     function updateViewToggleText() {
@@ -473,11 +497,21 @@
             }
             link.textContent = file.title;
             content.appendChild(link);
-        } else {
+        } else if (!file.syntax) {
             var noLink = document.createElement("span");
             noLink.className = "no-link";
             noLink.textContent = file.title + " (tidak tersedia/belum diunggah)";
             content.appendChild(noLink);
+        } else {
+            var syntaxTitle = document.createElement("a");
+            syntaxTitle.className = "syntax-title-link";
+            if (file.indicator) {
+                syntaxTitle.dataset.indicator = file.indicator;
+            }
+            syntaxTitle.setAttribute("role", "button");
+            syntaxTitle.setAttribute("tabindex", "0");
+            syntaxTitle.textContent = file.title;
+            content.appendChild(syntaxTitle);
         }
 
         if (file.note) {
@@ -485,6 +519,39 @@
             note.className = "file-note";
             note.textContent = ">> " + file.note;
             content.appendChild(note);
+        }
+
+        if (file.syntax) {
+            var syntaxContainer = document.createElement("details");
+            syntaxContainer.className = "syntax-container";
+
+            var summary = document.createElement("summary");
+            summary.className = "syntax-summary";
+            summary.textContent = file.indicator ? "Sintaks: " + file.indicator : "Lihat Sintaks SPSS";
+
+            var syntaxContent = document.createElement("div");
+            syntaxContent.className = "syntax-content";
+
+            var copyBtn = document.createElement("button");
+            copyBtn.type = "button";
+            copyBtn.className = "copy-btn js-copy-btn";
+            copyBtn.textContent = "Salin";
+            copyBtn.setAttribute("aria-label", "Salin sintaks");
+
+            var pre = document.createElement("pre");
+            pre.className = "syntax-pre";
+
+            var code = document.createElement("code");
+            code.textContent = file.syntax;
+
+            pre.appendChild(code);
+            syntaxContent.appendChild(copyBtn);
+            syntaxContent.appendChild(pre);
+
+            syntaxContainer.appendChild(summary);
+            syntaxContainer.appendChild(syntaxContent);
+
+            content.appendChild(syntaxContainer);
         }
 
         row.appendChild(badge);
@@ -499,7 +566,8 @@
             var yearMatch = curYear === "all" || String(item.year) === curYear;
             var monthMatch = curMonth === "all" || item.periodNorm === curMonth;
             var categoryMatch = curCat === "all" || item.category === curCat;
-            return yearMatch && monthMatch && categoryMatch;
+            var indicatorMatch = curIndicator === "all" || item.indicator === curIndicator;
+            return yearMatch && monthMatch && categoryMatch && indicatorMatch;
         });
 
         if (els.statsCount) {
@@ -606,6 +674,11 @@
         while (els.monthFilter.options.length > 1) {
             els.monthFilter.remove(1);
         }
+        if (els.indicatorFilter) {
+            while (els.indicatorFilter.options.length > 1) {
+                els.indicatorFilter.remove(1);
+            }
+        }
 
         var years = Array.from(
             new Set(
@@ -641,6 +714,23 @@
             els.monthFilter.appendChild(option);
         });
 
+        if (els.indicatorFilter) {
+            var indicators = Array.from(
+                new Set(
+                    data
+                        .filter(function (item) { return item.category === "sintaks" && item.indicator; })
+                        .map(function (item) { return item.indicator; })
+                )
+            ).sort();
+
+            indicators.forEach(function (indicator) {
+                var option = document.createElement("option");
+                option.value = indicator;
+                option.textContent = indicator;
+                els.indicatorFilter.appendChild(option);
+            });
+        }
+
         if (els.dbVer) {
             els.dbVer.textContent = formatDbUpdatedLabel(meta.dbBuiltAt || "");
         }
@@ -649,12 +739,47 @@
     function bindEvents() {
         els.grid.addEventListener("click", function (event) {
             var badge = closestElement(event.target, ".badge[data-tag]");
-            if (!badge) {
+            if (badge) {
+                curCat = badge.dataset.tag || "all";
+                updateCategoryButtons();
+                render();
                 return;
             }
-            curCat = badge.dataset.tag || "all";
-            updateCategoryButtons();
-            render();
+
+            var syntaxTitleLink = closestElement(event.target, ".syntax-title-link");
+            if (syntaxTitleLink && syntaxTitleLink.dataset.indicator) {
+                curCat = "sintaks";
+                curIndicator = syntaxTitleLink.dataset.indicator;
+                if (els.indicatorFilter) {
+                    els.indicatorFilter.value = curIndicator;
+                }
+                updateCategoryButtons();
+                render();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return;
+            }
+
+            var copyBtn = closestElement(event.target, ".js-copy-btn");
+            if (copyBtn) {
+                var pre = copyBtn.nextElementSibling;
+                if (pre && pre.tagName === 'PRE') {
+                    var text = pre.textContent;
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text).then(function () {
+                            var originalText = copyBtn.textContent;
+                            copyBtn.textContent = "Tersalin!";
+                            copyBtn.classList.add("copied");
+                            setTimeout(function () {
+                                copyBtn.textContent = originalText;
+                                copyBtn.classList.remove("copied");
+                            }, 2000);
+                        }).catch(function (err) {
+                            console.error("Gagal menyalin", err);
+                        });
+                    }
+                }
+                return;
+            }
         });
 
         els.yearFilter.addEventListener("change", function (event) {
@@ -666,6 +791,13 @@
             curMonth = event.target.value;
             render();
         });
+
+        if (els.indicatorFilter) {
+            els.indicatorFilter.addEventListener("change", function (event) {
+                curIndicator = event.target.value;
+                render();
+            });
+        }
 
         els.catFilters.addEventListener("click", function (event) {
             var button = closestElement(event.target, ".btn[data-cat]");
@@ -690,8 +822,12 @@
                 curYear = "all";
                 curMonth = "all";
                 curCat = "all";
+                curIndicator = "all";
                 els.yearFilter.value = "all";
                 els.monthFilter.value = "all";
+                if (els.indicatorFilter) {
+                    els.indicatorFilter.value = "all";
+                }
                 updateCategoryButtons();
                 render();
             });
